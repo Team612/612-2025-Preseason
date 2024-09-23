@@ -12,6 +12,7 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -130,27 +131,26 @@ public class TrajectoryCreation {
         double tagX = 0;
         double tagY = 0;
         Rotation2d tagAngle = new Rotation2d();
-        double xChange = 0;
+        double xChange = Units.inchesToMeters(54);
         double yChange = 0;
-       
-        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-            tagX = vision.return_tag_pose(7).getX();
-            tagY = vision.return_tag_pose(7).getY();; 
-            tagAngle = new Rotation2d(180);
-            xChange = 1;
-        } else {
-            tagX = vision.return_tag_pose(4).getX();
-            tagY = vision.return_tag_pose(4).getY();; 
-            tagAngle = new Rotation2d(0);
-            xChange = -1;
-        }
+        
+        tagX = vision.return_tag_pose(7).getX();
+        tagY = vision.return_tag_pose(7).getY();
+        tagAngle = new Rotation2d(0);
 
-        double offset = Constants.SwerveConstants.trackWidth / 2;
+        // double offset = Constants.SwerveConstants.trackWidth / 2;
+
+        // List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
+        //         new Pose2d(x, y, angle),
+        //         new Pose2d(tagX + xChange, tagY + yChange, tagAngle)
+        //     );
+
+        System.out.println(tagX + xChange);
 
         List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
-                new Pose2d(x, y, angle),
-                new Pose2d(tagX + xChange, tagY + yChange, tagAngle)
-            );
+            new Pose2d(x, y, angle),
+            new Pose2d(tagX + xChange, tagY, tagAngle)
+        );
 
         // Create the path using the bezier points created above
         PathPlannerPath path = new PathPlannerPath(
@@ -173,25 +173,26 @@ public class TrajectoryCreation {
         double tagX = 0;
         double tagY = 0;
         Rotation2d tagAngle = new Rotation2d();
-        double xChange = 0;
-        double yChange = 0;
-       
-        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-            tagX = vision.return_tag_pose(6).getX();
-            tagY = vision.return_tag_pose(6).getY();; 
-            tagAngle = new Rotation2d(90);
-        } else {
-            tagX = vision.return_tag_pose(5).getX();
-            tagY = vision.return_tag_pose(5).getY();; 
-            tagAngle = new Rotation2d(90);
-        }
+        double xChange = Constants.SwerveConstants.trackWidth/2;
+        double yChange = Constants.SwerveConstants.trackWidth/2;
+        
+        tagX = vision.return_tag_pose(6).getX();
+        tagY = vision.return_tag_pose(6).getY();
+        tagAngle = new Rotation2d(3 * Math.PI/2);
 
-        double offset = Constants.SwerveConstants.trackWidth / 2;
+        // double offset = Constants.SwerveConstants.trackWidth / 2;
+
+        // List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
+        //         new Pose2d(x, y, angle),
+        //         new Pose2d(tagX + xChange, tagY + yChange, tagAngle)
+        //     );
+
+        System.out.println(tagX + xChange);
 
         List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
-                new Pose2d(x, y, angle),
-                new Pose2d(tagX + xChange, tagY + yChange, tagAngle)
-            );
+            new Pose2d(x, y, angle),
+            new Pose2d(tagX + xChange, tagY - yChange, tagAngle)
+        );
 
         // Create the path using the bezier points created above
         PathPlannerPath path = new PathPlannerPath(
@@ -265,14 +266,14 @@ public class TrajectoryCreation {
         double y = estimatedPose.getY();
         Rotation2d angle = estimatedPose.getRotation();
        
-        PhotonPipelineResult result = vision.getCamera().getLatestResult();
+        PhotonPipelineResult result = vision.getApriltagCamera().getLatestResult();
         int id;
         double tagX = 0;
         double tagY = 0; 
         Rotation2d tagAngle = new Rotation2d();
 
         if(result.hasTargets()){
-            id = vision.getCamera().getLatestResult().getBestTarget().getFiducialId();
+            id = vision.getApriltagCamera().getLatestResult().getBestTarget().getFiducialId();
 
 
             Pose2d tagPose = vision.return_tag_pose(id).toPose2d();
@@ -308,7 +309,7 @@ public class TrajectoryCreation {
         } else if(id == 3 || id == 4 || id == 13) {
             List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
                 new Pose2d(x, y, angle),
-                new Pose2d(tagX - 1, tagY + offset, tagAngle)
+                new Pose2d(tagX - 2, tagY + offset, tagAngle)
             );
 
             // Create the path using the bezier points created above
@@ -429,23 +430,29 @@ public class TrajectoryCreation {
         
         if (hasTargets){
             //get the current RELATIVE notespace
-            Transform2d notespace = vision.getNoteSpace();
-            //double offset = Units.inchesToMeters(10); //center offset
-            //add whatever translations to it
-            notespace = new Transform2d(notespace.getX() - 0.5, notespace.getY(), notespace.getRotation());
-            //transform the notespace to field relative coords. The angle is in estimatedPose, and the transformation is done by this angle.
-            Pose2d transformedPose = estimatedPose.transformBy(notespace);
+            Transform3d notespace = vision.getNoteSpace().plus(vision.getRobotToCam());
+            Transform2d notespace2d = new Transform2d(new Translation2d(notespace.getX(), notespace.getY()), new Rotation2d());
+            Pose2d camPose = estimatedPose.transformBy(notespace2d);
+            // Transform2d notespace2d;
+            // double offset = Units.inchesToMeters(10); //center offset
+            // //add whatever translations to it
+            // //notespace = new Transform2d(notespace.getX() - (0.5 * Math.cos(drivetrain.getNavxAngle().getDegrees())), notespace.getY() - 0.2 + (0.2 * -Math.sin(drivetrain.getNavxAngle().getDegrees())), notespace.getRotation());
+            // notespace = notespace.plus(new Transform3d(new Translation3d(-0.5, 0,0), new Rotation3d()));
+            // notespace2d = new Transform2d(new Translation2d(notespace.getX(), notespace.getY()), new Rotation2d());
+            // //transform the notespace to field relative coords. The angle is in estimatedPose, and the transformation is done by this angle.
+            // Transform2d cameraToCenter = new Transform2d(new Translation2d(vision.getRobotToCam(3).getX(), vision.getRobotToCam(3).getY()), new Rotation2d(Units.degreesToRadians(vision.getRobotToCam(3).getRotation().getAngle())));
+            // Pose2d transformedPose = estimatedPose.transformBy(notespace2d.plus(cameraToCenter));
             //this is assuming that the current angle in the transformation is 0 degrees.
             // transformedPose.rotateBy(new Rotation2d(
             //     Units.degreesToRadians(-vision.getTargetYaw() + drivetrain.getNavxAngle().getDegrees()))
             //     );
 
-            double endLocationX = transformedPose.getX();
-            double endLocationY = (transformedPose.getY()); //- (2 * notespace.getY()) + 0.075
+            double endLocationX = camPose.getX();
+            double endLocationY = (camPose.getY()); //- (2 * notespace.getY()) + 0.075
             System.out.println("---------------TRANSFORMATIONS----------------");
             System.out.println("End Location X: " + endLocationX);
             System.out.println("End Location Y: " + endLocationY);
-            System.out.println("Transformed By (angle): " + transformedPose.getRotation().getDegrees());
+            System.out.println("Transformed By (angle): " + camPose.getRotation().getDegrees());
             List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
                 new Pose2d(x, y, angle),
                 // new Pose2d(x - 0.3,y,angle),
@@ -453,9 +460,8 @@ public class TrajectoryCreation {
                 new Pose2d(endLocationX, endLocationY, angle)
             );
 
-            PathPlannerPath path = new PathPlannerPath(
-            bezierPoints,
-             constraints,
+            PathPlannerPath path = new PathPlannerPath(bezierPoints,
+             new PathConstraints(Constants.SwerveConstants.maxSpeed, Constants.SwerveConstants.maxAcceleration, Constants.SwerveConstants.maxAngularVelocity, Constants.SwerveConstants.maxAngularAcceleration), 
              new GoalEndState(0, angle));
              path.preventFlipping = true; //prevents the path from being flipped once the coords are reached
              return path;
@@ -464,7 +470,6 @@ public class TrajectoryCreation {
         System.out.println("NO TARGETS");
         return null;
     }
-
  
 
     

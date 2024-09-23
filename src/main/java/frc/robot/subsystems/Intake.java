@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -19,7 +21,7 @@ public class Intake extends SubsystemBase {
   private static final double DEADZONE = 0.05;
   private CANSparkMax m_IntakePivotMotor;
   private TalonSRX m_IntakeRollerMotor;
-  private DigitalInput IRSensor = new DigitalInput(Constants.IntakeConstants.IRport);
+  private AnalogInput IRSensor = new AnalogInput(Constants.IntakeConstants.IRport);
   static Intake instance = null;
   /** Creates a new Intake. */
   public Intake() {
@@ -35,11 +37,18 @@ public class Intake extends SubsystemBase {
     }
     return instance;
   }
+  
+  // return limit switch states
+  public boolean getIntakeLimitStateForward(){
+    return m_IntakePivotMotor.getForwardLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed).isPressed();
+  }
 
   // return limit switch states
-  public boolean getIntakeLimitState(){
-    return m_IntakePivotMotor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyOpen).isPressed();
+  public boolean getIntakeLimitStateReverse(){
+    return m_IntakePivotMotor.getReverseLimitSwitch(SparkLimitSwitch.Type.kNormallyClosed).isPressed();
   }
+
+
 
   // move intake pivot
   public void rotateIntake(double rotate){
@@ -53,12 +62,15 @@ public class Intake extends SubsystemBase {
     m_IntakeRollerMotor.set(TalonSRXControlMode.PercentOutput, rotate);
   }
 
-  public boolean getIRSensor(){
-    return IRSensor.get();
+  public double getIRSensor(){
+    return IRSensor.getVoltage();
   }
 
   @Override
   public void periodic() {
+    // SmartDashboard.putBoolean("limit forward", getIntakeLimitStateForward());
+    // SmartDashboard.putBoolean("limit reverse", getIntakeLimitStateReverse());
+    // SmartDashboard.putNumber("IR Sensor", getIRSensor());
     // This method will be called once per scheduler run
   }
 }

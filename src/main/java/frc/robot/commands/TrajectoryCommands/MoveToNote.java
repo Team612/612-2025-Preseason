@@ -33,9 +33,9 @@ public class MoveToNote extends Command {
     initialPos = m_drivetrain.getEncoderMeters();
     if(m_vision.hasTarget()) {
       goalAngle = -m_vision.getTargetYaw();
-      goalPos = m_vision.getNoteRange() - 1; //1 meter in front of note
+      goalPos = m_vision.getNoteRange() - 0.5; //1 m in front of note
     }
-    m_drivetrain.driveRobotRelative(new Translation2d(), 0, false);
+    m_drivetrain.drive(new Translation2d(), 0, true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,18 +48,18 @@ public class MoveToNote extends Command {
     }
     double xSpeed = Math.cos(Units.degreesToRadians(initialAngle + goalAngle)) * curPos;
     double ySpeed = Math.sin(Units.degreesToRadians(initialAngle + goalAngle)) * curPos;
-    m_drivetrain.drive(new Translation2d(xSpeed, ySpeed), Units.degreesToRadians(curAngle), false);
+    m_drivetrain.drive(new Translation2d(xSpeed, ySpeed), Units.degreesToRadians(curAngle) * 2, true);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drivetrain.driveRobotRelative(new Translation2d(0, 0), 0, false);
+    m_drivetrain.drive(new Translation2d(), 0, true);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return goalPos - (Math.abs(m_drivetrain.getEncoderMeters() - initialPos)) < 0.1;
   }
 }

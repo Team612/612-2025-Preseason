@@ -4,38 +4,46 @@
 
 package frc.robot.commands.IntakeCommands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
-public class MoveRollers extends Command {
-  private final Intake m_Intake;
-  /** Creates a new MoveRollers. */
-  public MoveRollers(Intake intake) {
+public class FeedNote extends Command {
+  private Intake m_intake;
+  private Timer time = new Timer();
+  /** Creates a new AutoShootSpeaker. */
+  public FeedNote(Intake i) {
+    m_intake = i;
+    addRequirements(i);
     // Use addRequirements() here to declare subsystem dependencies.
-    m_Intake = intake;
-    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    time.start();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Intake.moveRollers(Constants.IntakeConstants.rollerSpeed);
+    m_intake.moveRollers(Constants.IntakeConstants.rollerSpeedOuttake);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Intake.moveRollers(0);
+    time.stop();
+    time.reset();
+    m_intake.moveRollers(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_Intake.getIRSensor();
+    // return count >= 10;
+    return time.get() >= 2;
   }
 }

@@ -41,7 +41,7 @@ public class RunOnTheFly extends Command {
   public void initialize() {
 
     PathPlannerPath path = m_traj.onthefly(poseEstimatorSystem, m_vision, translation);
-
+    
     controllerCommand = AutoBuilder.followPath(path);
     controllerCommand.initialize();
   }

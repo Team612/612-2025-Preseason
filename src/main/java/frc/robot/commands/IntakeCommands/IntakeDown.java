@@ -36,6 +36,6 @@ public class IntakeDown extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_Intake.getIntakeLimitStateReverse();
   }
 }

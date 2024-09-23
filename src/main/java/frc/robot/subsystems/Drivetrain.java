@@ -3,15 +3,24 @@ package frc.robot.subsystems;
 import java.util.function.Consumer;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.SwerveModule;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,19 +28,21 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import frc.robot.Constants;
+import frc.robot.subsystems.SwerveLib.SwerveModule;
 
 public class Drivetrain extends SubsystemBase {
-  private static Drivetrain drivetrain = null;
+  private static Drivetrain driveSubsystem = null;
 
   private SwerveModule[] mSwerveMods;
 
   private static AHRS navx;
   private Rotation2d navxAngleOffset;
 
-  private Field2d field;
+  private Field2d fieldLayout;
 
   private boolean isCharacterizing = false;
   private double characterizationVolts = 0.0;
+  private StructArrayPublisher<SwerveModuleState> publisher;
 
   public Drivetrain() {
     mSwerveMods =
@@ -41,23 +52,27 @@ public class Drivetrain extends SubsystemBase {
           new SwerveModule(2, Constants.SwerveConstants.Mod2.constants),
           new SwerveModule(3, Constants.SwerveConstants.Mod3.constants)
         };
+
+    publisher = NetworkTableInstance.getDefault()
+    .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
     
     navx = new AHRS(I2C.Port.kMXP); 
     navxAngleOffset = new Rotation2d();
     navx.reset();
 
-    field = new Field2d();
-    SmartDashboard.putData("Field", field);
+    fieldLayout = new Field2d();
+    SmartDashboard.putData("Field", fieldLayout);
 
   }
 
   public static Drivetrain getInstance(){
-    if (drivetrain == null){
-       drivetrain = new Drivetrain();
+    if (driveSubsystem == null){
+       driveSubsystem = new Drivetrain();
     }
-    return drivetrain;
+    return driveSubsystem;
   }
 
+  //Drives field relative
   public void drive(
       Translation2d translation, double rotation, boolean isOpenLoop) {
     SwerveModuleState[] swerveModuleStates =
@@ -72,6 +87,8 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+
+  //drives robot relative
   public void driveRobotRelative(
       Translation2d translation, double rotation, boolean isOpenLoop) {
     SwerveModuleState[] swerveModuleStates = 
@@ -85,6 +102,7 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+  //used for autonomous driving
   public void autoDrive(ChassisSpeeds speeds) {
     SwerveModuleState[] swerveModuleStates =
         Constants.SwerveConstants.swerveKinematics.toSwerveModuleStates(speeds);
@@ -93,19 +111,6 @@ public class Drivetrain extends SubsystemBase {
 
     for (SwerveModule mod : mSwerveMods) {
       mod.setDesiredState(swerveModuleStates[mod.moduleNumber], false);
-    }
-  }
-
-  public void wheelTest(ChassisSpeeds speeds, int n){
-      SwerveModuleState[] swerveModuleStates =
-        Constants.SwerveConstants.swerveKinematics.toSwerveModuleStates(speeds);
-
-      SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.SwerveConstants.maxSpeed);
-
-    for (SwerveModule mod : mSwerveMods) {
-      if (mod.moduleNumber == n){
-      mod.setDesiredState(swerveModuleStates[mod.moduleNumber], false);
-      }
     }
   }
 
@@ -126,21 +131,16 @@ public class Drivetrain extends SubsystemBase {
     return states;
   }
 
+  public SwerveModule[] getModules(){
+    return mSwerveMods;
+  }
+
   public SwerveModulePosition[] getPositions() {
     SwerveModulePosition[] positions = new SwerveModulePosition[4];
     for (SwerveModule mod : mSwerveMods) {
       positions[mod.moduleNumber] = mod.getPosition();
     }
     return positions;
-  }
-
-  public double getEncoderMeters() {
-    double sum = 0.0;
-    SwerveModulePosition[] positions = getPositions();
-    for (SwerveModulePosition pos : positions) {
-      sum += pos.distanceMeters;
-    }
-    return sum / 4.0;
   }
 
   public ChassisSpeeds getChassisSpeeds() {
@@ -155,6 +155,12 @@ public class Drivetrain extends SubsystemBase {
   public Rotation2d getNavxAngle(){
     return Rotation2d.fromDegrees(-navx.getAngle());
   }
+
+  public double getEncoderMeters() {
+    SwerveModulePosition[] positions = getPositions();
+    return positions[0].distanceMeters;
+  }
+
     
   // setter for setting the navxAngleOffset
   public void setNavxAngleOffset(Rotation2d angle){
@@ -190,6 +196,7 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+    publisher.set(getStates());
     // for (SwerveModule mod : mSwerveMods) {
     //   SmartDashboard.putNumber(
     //       "Mod " + mod.moduleNumber + " velocity", mod.getCharacterizationVelocity());
