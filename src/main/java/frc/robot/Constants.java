@@ -184,6 +184,9 @@ public final class Constants {
   
   // Intake constants
   public static class IntakeConstants{
+    public static final String pivotUpKey = "Pivot Speed";
+    public static final String rollerInKey = "Roller Speed";
+    
     public static final int pivotID = 9;
     public static final int rollerID = 10;
     public static final double intakeUpSpeed = 0.3;
