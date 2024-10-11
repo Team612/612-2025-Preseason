@@ -159,10 +159,10 @@ public class RobotContainer {
               m_drivetrain::runCharacterizationVolts,
               m_drivetrain::getCharacterizationVelocity));
 
-    List<String> autos = PathPlannerUtil.getExistingPaths();
-    for (String auto : autos) {
-      m_chooser.addOption(auto,  AutoBuilder.buildAuto(auto));
-    }
+    // List<String> autos = PathPlannerUtil.getExistingPaths();
+    // for (String auto : autos) {
+    //   m_chooser.addOption(auto,  AutoBuilder.buildAuto(auto));
+    // }
 
     
       
