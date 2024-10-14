@@ -2,6 +2,8 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+//in the beginning of the auto to shoot the note immediatley, beginning of every auto
+
 package frc.robot.commands.ShooterCommands;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -44,7 +46,7 @@ public class AutoShootSpeaker extends Command {
     //   time.start();
     // }
     // if(m_shooter.getCurrent() < 16 && spikeDone) {
-      if(time.get() >= 5) {
+      if(time.get() >= 1) {
         m_shooter.shoot(Constants.ShooterConstants.shooterLeftSpeedSpeaker, Constants.ShooterConstants.shooterRightSpeedSpeaker);
         m_intake.moveRollers(Constants.IntakeConstants.rollerSpeedOuttake);
       } else {
@@ -68,6 +70,6 @@ public class AutoShootSpeaker extends Command {
   @Override
   public boolean isFinished() {
     // return count >= 10;
-    return time.get() >= 7;
+    return time.get() >= 1.5;
   }
 }

@@ -14,13 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Auto Start"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake Down"
+            "name": "Auto Speaker"
           }
         },
         {
@@ -31,6 +25,12 @@
                 "type": "path",
                 "data": {
                   "pathName": "ToMiddleNote"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Down"
                 }
               },
               {
@@ -47,6 +47,12 @@
           "data": {
             "commands": [
               {
+                "type": "path",
+                "data": {
+                  "pathName": "Middle to Subwoofer"
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "Intake Up"
@@ -55,16 +61,29 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Apriltag Align"
+                  "name": "Shooter On"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "Feed Note"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Eject"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shooter On"
+                }
+              }
+            ]
           }
         }
       ]

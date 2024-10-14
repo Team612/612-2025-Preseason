@@ -36,6 +36,7 @@ import frc.robot.commands.ShooterCommands.ShooterLeftMotor;
 import frc.robot.commands.ShooterCommands.ShooterRightMotor;
 import frc.robot.commands.ShooterCommands.SpeedUpAmp;
 import frc.robot.commands.ShooterCommands.SpeedUpSpeaker;
+import frc.robot.commands.IntakeCommands.AutoEject;
 import frc.robot.commands.TrajectoryCommands.AlignAmp;
 import frc.robot.commands.TrajectoryCommands.AlignSpeaker;
 import frc.robot.commands.TrajectoryCommands.AlignSpeakerManual;
@@ -77,6 +78,7 @@ public class RobotContainer {
   private final LeaveZone m_leaveZone = new LeaveZone(m_drivetrain);
   private final forwardMeter m_forwardMeter = new forwardMeter(m_drivetrain, m_poseEstimator, m_traj, m_vision, 0);
   private final AlignSpeakerManual m_manualAlign = new AlignSpeakerManual(m_drivetrain, m_vision);
+  private final AutoEject m_autoeject = new AutoEject(m_intake);
 
   // Drive command
   private final DefaultDrive m_defaultDrive = new DefaultDrive( m_drivetrain,
@@ -209,7 +211,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake Up", m_intakeUp);
     NamedCommands.registerCommand("Rollers Out", m_moveRollersOut);
     NamedCommands.registerCommand("Rollers In", m_moveRollersIn);
-    NamedCommands.registerCommand("Auto Start", m_autoStart);
+    NamedCommands.registerCommand("Auto Shoot", m_autoStart);
     NamedCommands.registerCommand("Feed Note", m_feedNote);
     NamedCommands.registerCommand("Apriltag Align", m_alignSpeaker);
     
@@ -218,6 +220,7 @@ public class RobotContainer {
 
     //Autonomous Commands
     NamedCommands.registerCommand("Auto Speaker", m_autoShootSpeaker);
+    NamedCommands.registerCommand("Auto Eject", m_autoeject);
   }
 
  
