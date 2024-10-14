@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Auto Speaker"
+            "name": "Auto Shoot Speaker"
           }
         },
         {
@@ -118,7 +118,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "A2M Left-Subwoofer"
+                  "pathName": "Middle Left-Subwoofer"
                 }
               },
               {

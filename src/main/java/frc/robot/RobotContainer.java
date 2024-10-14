@@ -5,38 +5,31 @@
 package frc.robot;
 import java.util.List;
 
-import javax.swing.SpinnerDateModel;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveCommands.DefaultDrive;
 import frc.robot.commands.DriveCommands.FieldOrientedDrive;
 import frc.robot.commands.DriveCommands.LeaveZone;
-import frc.robot.commands.IntakeCommands.AutoIntake;
-import frc.robot.commands.IntakeCommands.FeedNote;
-import frc.robot.commands.IntakeCommands.IntakeDown;
-import frc.robot.commands.IntakeCommands.IntakeUp;
-import frc.robot.commands.IntakeCommands.MoveRollersIn;
-import frc.robot.commands.IntakeCommands.MoveRollersOut;
-import frc.robot.commands.ShooterCommands.AutoShootAmp;
-import frc.robot.commands.ShooterCommands.AutoShootSpeaker;
-import frc.robot.commands.ShooterCommands.AutoShootStart;
-import frc.robot.commands.ShooterCommands.ShootNoteAmp;
-import frc.robot.commands.ShooterCommands.ShootNoteSpeaker;
-import frc.robot.commands.ShooterCommands.ShooterLeftMotor;
-import frc.robot.commands.ShooterCommands.ShooterRightMotor;
-import frc.robot.commands.ShooterCommands.SpeedUpAmp;
-import frc.robot.commands.ShooterCommands.SpeedUpSpeaker;
-import frc.robot.commands.IntakeCommands.AutoEject;
+import frc.robot.commands.IntakeCommands.AutoCommands.AutoEject;
+import frc.robot.commands.IntakeCommands.AutoCommands.AutoIntake;
+import frc.robot.commands.IntakeCommands.TeleopCommands.IntakeDown;
+import frc.robot.commands.IntakeCommands.TeleopCommands.IntakeUp;
+import frc.robot.commands.IntakeCommands.TeleopCommands.MoveRollersIn;
+import frc.robot.commands.IntakeCommands.TeleopCommands.MoveRollersOut;
+import frc.robot.commands.ShooterCommands.AutoCommands.AutoShootAmp;
+import frc.robot.commands.ShooterCommands.AutoCommands.AutoShootSpeaker;
+import frc.robot.commands.ShooterCommands.TeleopCommands.ShootNoteAmp;
+import frc.robot.commands.ShooterCommands.TeleopCommands.ShootNoteSpeaker;
+import frc.robot.commands.ShooterCommands.TeleopCommands.ShooterLeftMotor;
+import frc.robot.commands.ShooterCommands.TeleopCommands.ShooterRightMotor;
+import frc.robot.commands.ShooterCommands.TeleopCommands.SpeedUpAmp;
+import frc.robot.commands.ShooterCommands.TeleopCommands.SpeedUpSpeaker;
 import frc.robot.commands.TrajectoryCommands.AlignAmp;
 import frc.robot.commands.TrajectoryCommands.AlignSpeaker;
 import frc.robot.commands.TrajectoryCommands.AlignSpeakerManual;
@@ -78,7 +71,7 @@ public class RobotContainer {
   private final LeaveZone m_leaveZone = new LeaveZone(m_drivetrain);
   private final forwardMeter m_forwardMeter = new forwardMeter(m_drivetrain, m_poseEstimator, m_traj, m_vision, 0);
   private final AlignSpeakerManual m_manualAlign = new AlignSpeakerManual(m_drivetrain, m_vision);
-  private final AutoEject m_autoeject = new AutoEject(m_intake);
+  private final AutoEject m_AutoEject = new AutoEject(m_intake);
 
   // Drive command
   private final DefaultDrive m_defaultDrive = new DefaultDrive( m_drivetrain,
@@ -93,16 +86,14 @@ public class RobotContainer {
   private final MoveRollersIn m_moveRollersIn = new MoveRollersIn(m_intake);
   private final ShootNoteSpeaker m_shootSpeaker = new ShootNoteSpeaker(m_shooter);
   private final ShootNoteAmp m_shootAmp = new ShootNoteAmp(m_shooter);
-  private final ShooterLeftMotor m_shootLeftMotor = new ShooterLeftMotor(m_shooter);
-  private final ShooterRightMotor m_shootRightMotor = new ShooterRightMotor(m_shooter);
+  // private final ShooterLeftMotor m_shootLeftMotor = new ShooterLeftMotor(m_shooter);
+  // private final ShooterRightMotor m_shootRightMotor = new ShooterRightMotor(m_shooter);
   private final AutoShootSpeaker m_autoShootSpeaker = new AutoShootSpeaker(m_shooter, m_intake);
   private final AutoShootAmp m_autoShootAmp = new AutoShootAmp(m_shooter, m_intake);
-  private final SpeedUpSpeaker m_speedUpSpeaker = new SpeedUpSpeaker(m_shooter);
-  private final SpeedUpAmp m_speedUpAmp = new SpeedUpAmp(m_shooter);
-  private final AutoIntake autoIntake = new AutoIntake(m_drivetrain, m_vision, m_intake);
-  private final ClimbTeleop m_climbUp = new ClimbTeleop(m_climb);
-  private final AutoShootStart m_autoStart = new AutoShootStart(m_shooter, m_intake);
-  private final FeedNote m_feedNote = new FeedNote(m_intake);
+  // private final SpeedUpSpeaker m_speedUpSpeaker = new SpeedUpSpeaker(m_shooter);
+  // private final SpeedUpAmp m_speedUpAmp = new SpeedUpAmp(m_shooter);
+  // private final AutoIntake autoIntake = new AutoIntake(m_drivetrain, m_vision, m_intake);
+  // private final ClimbTeleop m_climbUp = new ClimbTeleop(m_climb);
 
   //Drive subsystems declarations 
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -161,10 +152,10 @@ public class RobotContainer {
               m_drivetrain::runCharacterizationVolts,
               m_drivetrain::getCharacterizationVelocity));
 
-    // List<String> autos = PathPlannerUtil.getExistingPaths();
-    // for (String auto : autos) {
-    //   m_chooser.addOption(auto,  AutoBuilder.buildAuto(auto));
-    // }
+    List<String> autos = PathPlannerUtil.getExistingPaths();
+    for (String auto : autos) {
+      m_chooser.addOption(auto,  AutoBuilder.buildAuto(auto));
+    }
 
     
       
@@ -207,20 +198,14 @@ public class RobotContainer {
 
   private void configureAutoBuilderCommands(){
     //Intake (MANUAL)
-    NamedCommands.registerCommand("Intake Down", m_intakeDown);
-    NamedCommands.registerCommand("Intake Up", m_intakeUp);
-    NamedCommands.registerCommand("Rollers Out", m_moveRollersOut);
-    NamedCommands.registerCommand("Rollers In", m_moveRollersIn);
-    NamedCommands.registerCommand("Auto Shoot", m_autoStart);
-    NamedCommands.registerCommand("Feed Note", m_feedNote);
-    NamedCommands.registerCommand("Apriltag Align", m_alignSpeaker);
-    
-    //Shooter (MANUAL)
-    NamedCommands.registerCommand("Shooter On", m_shootSpeaker);
-
-    //Autonomous Commands
-    NamedCommands.registerCommand("Auto Speaker", m_autoShootSpeaker);
-    NamedCommands.registerCommand("Auto Eject", m_autoeject);
+    NamedCommands.registerCommand("Intake Down", m_intakeDown); //brings intake down
+    NamedCommands.registerCommand("Intake Up", m_intakeUp); //brings intake up
+    NamedCommands.registerCommand("Rollers Out", m_moveRollersOut); //moves the rollers out (ejects) No End Condition
+    NamedCommands.registerCommand("Rollers In", m_moveRollersIn);  //moves the rollers in (intakes) End condition if note is detected
+    NamedCommands.registerCommand("Apriltag Align", m_alignSpeaker); //auto aligns april tag
+    NamedCommands.registerCommand("Shooter On", m_shootSpeaker); //turns on the shooter, no end condition
+    NamedCommands.registerCommand("Auto Shoot Speaker", m_autoShootSpeaker); //auto shoots speaker, end condition
+    NamedCommands.registerCommand("Auto Eject", m_AutoEject); //auto ejects note, end condition.
   }
 
  

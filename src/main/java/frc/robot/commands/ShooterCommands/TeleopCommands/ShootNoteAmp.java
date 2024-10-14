@@ -2,49 +2,40 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.IntakeCommands;
-
-import edu.wpi.first.wpilibj.Timer;
+package frc.robot.commands.ShooterCommands.TeleopCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
-public class AutoEject extends Command {
-  private final Intake m_Intake;
-  private double count = 0;
-  private Timer time = new Timer();
-  /** Creates a new MoveRollers. */
-  public AutoEject(Intake intake) {
+public class ShootNoteAmp extends Command {
+  private final Shooter m_shooter;
+  /** Creates a new ShootNoteAmp. */
+  public ShootNoteAmp(Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_Intake = intake;
-    addRequirements(intake);
+    m_shooter = shooter;
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    time.start();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Intake.moveRollers(Constants.IntakeConstants.rollerSpeedOuttake);
+    m_shooter.shoot(Constants.ShooterConstants.shooterLeftSpeedAmp, Constants.ShooterConstants.shooterRightSpeedAmp);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    time.stop();
-    time.reset();
-    m_Intake.moveRollers(0);
+    m_shooter.shoot(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // return m_Intake.getIRSensor();
-    return time.get() >= 1.5;
+    return false;
   }
 }

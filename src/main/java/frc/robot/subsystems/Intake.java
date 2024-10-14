@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -79,7 +78,7 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
 
     SmartDashboard.putNumber(Constants.IntakeConstants.pivotUpKey, m_IntakePivotMotor.getOutputCurrent());  
-    SmartDashboard.putNumber(Constants.IntakeConstants.rollerInKey, m_IntakeRollerMotor.getOutputCurrent());  
+    SmartDashboard.putNumber(Constants.IntakeConstants.rollerInKey, m_IntakeRollerMotor.getSupplyCurrent());  
 
     Constants.ShooterConstants.shooterLeftSpeedSpeaker = Preferences.getDouble(Constants.IntakeConstants.pivotUpKey, realPivotSpeed);  
     Constants.ShooterConstants.shooterRightSpeedSpeaker = Preferences.getDouble(Constants.IntakeConstants.rollerInKey, realRollerSpeed); 

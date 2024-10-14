@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.8899999999999997,
-        "y": 6.99
+        "x": 2.8071304541185604,
+        "y": 6.612232821144172
       },
       "isLocked": false,
       "linkedName": null
@@ -44,9 +44,6 @@
   },
   "reversed": false,
   "folder": "Middle Paths",
-  "previewStartingState": {
-    "rotation": 0,
-    "velocity": 0
-  },
+  "previewStartingState": null,
   "useDefaultConstraints": true
 }

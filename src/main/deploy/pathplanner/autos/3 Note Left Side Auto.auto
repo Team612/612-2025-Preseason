@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Auto Speaker"
+            "name": "Auto Shoot Speaker"
           }
         },
         {
@@ -93,7 +93,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Leave Left Far"
+                  "pathName": "Leave Left Far In"
                 }
               },
               {
@@ -118,7 +118,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Back Left Far"
+                  "pathName": "Back Left Far In"
                 }
               },
               {
