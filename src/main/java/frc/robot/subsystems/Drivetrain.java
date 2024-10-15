@@ -4,8 +4,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
-
-
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -46,6 +45,7 @@ public class Drivetrain extends SubsystemBase {
 
     publisher = NetworkTableInstance.getDefault()
     .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
+
     
     navx = new AHRS(I2C.Port.kMXP); 
     navxAngleOffset = new Rotation2d();

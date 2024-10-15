@@ -174,8 +174,8 @@ public class ShuffleboardTabs {
         poseEstimatorAngle.setDouble(poseEstimatorSubsystem.getCurrentPose().getRotation().getDegrees());
         poseEstimatorRadians.setDouble(poseEstimatorSubsystem.getCurrentPose().getRotation().getRadians());
 
-        shooterLeftCurrent.setDouble(shooterSubsystem.getCurrent());
-        shooterRightCurrent.setDouble(shooterSubsystem.getCurrent());
+        shooterLeftCurrent.setDouble(shooterSubsystem.getCurrentLeft());
+        shooterRightCurrent.setDouble(shooterSubsystem.getCurrentRight());
 
         // hasCalibrationFront.setBoolean(visionSubsystem.hasCalibrationFront());
         // hasCalibrationBack.setBoolean(visionSubsystem.hasCalibrationBack());

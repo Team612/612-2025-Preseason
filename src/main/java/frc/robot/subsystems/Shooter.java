@@ -26,6 +26,7 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     m_ShooterMotorLeft = new CANSparkMax(Constants.ShooterConstants.shooterLeftID, MotorType.kBrushless);  
     m_ShooterMotorRight = new CANSparkMax(Constants.ShooterConstants.shooterRightID, MotorType.kBrushless);  
+    m_ShooterMotorRight.setInverted(true);
     Preferences.initDouble(Constants.ShooterConstants.leftSpeedKey, realLeftSpeed);
     Preferences.initDouble(Constants.ShooterConstants.rightSpeedKey, realRightSpeed);
   }
@@ -56,6 +57,13 @@ public class Shooter extends SubsystemBase {
     m_ShooterMotorRight.set(rotateRight);  
   }
 
+  public double getCurrentLeft(){
+  return m_ShooterMotorLeft.getOutputCurrent();
+  }
+
+  public double getCurrentRight(){
+    return m_ShooterMotorRight.getOutputCurrent();
+  }
   public double getCurrent() {
     return (m_ShooterMotorLeft.getOutputCurrent() + m_ShooterMotorRight.getOutputCurrent()) / 2;  
   }
