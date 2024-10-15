@@ -190,7 +190,7 @@ public final class Constants {
     public static final double intakeUpSpeed = 0.3;
     public static final double intakeDownSpeed = -0.3;
     public static final double rollerSpeedIntake = 0.5;
-    public static double rollerSpeedOuttake = 0.7;
+    public static double rollerSpeedOuttake = 1.0;
     public static final int IRport = 0;
   }
 
