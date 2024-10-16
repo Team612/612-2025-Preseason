@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.2,
-      "y": 5.55
+      "x": 0.69,
+      "y": 6.57
     },
-    "rotation": 0
+    "rotation": 57.0
   },
   "command": {
     "type": "sequential",
@@ -14,38 +14,51 @@
         {
           "type": "named",
           "data": {
-            "name": "Auto Start"
+            "name": "Auto Shoot Speaker"
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Intake Down"
-          }
-        },
-        {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Leave Subwoofer"
+                  "pathName": "Leave Left"
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "Rollers In"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake Down"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Rollers In"
+                      }
+                    }
+                  ]
                 }
               }
             ]
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left-Subwoofer"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -55,47 +68,73 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Apriltag Align"
+                  "name": "Shooter On"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Rollers Out"
-          }
-        },
-        {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Subwoofer-Right"
+                  "name": "Auto Eject"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Rollers In"
+                  "name": "Shooter On"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "Intake Down"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Leave Left Far In"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake Down"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Rollers In"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Back Left Far In"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -105,71 +144,34 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Apriltag Align"
+                  "name": "Shooter On"
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Rollers Out"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake Down"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Subwoofer-Left"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Rollers In"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake Up"
+                  "name": "Auto Eject"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Apriltag Align"
+                  "name": "Shooter On"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Rollers Out"
           }
         }
       ]
     }
   },
-  "folder": "Middle",
+  "folder": "Left",
   "choreoAuto": false
 }

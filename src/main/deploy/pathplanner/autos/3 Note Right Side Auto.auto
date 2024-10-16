@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.67,
-      "y": 4.54
+      "x": 0.6699236223008809,
+      "y": 4.543804579763226
     },
     "rotation": -57.0
   },
@@ -57,6 +57,82 @@
                 "type": "path",
                 "data": {
                   "pathName": "Right-Subwoofer"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Up"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shooter On"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Eject"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shooter On"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Leave Right Far"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake Down"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Rollers In"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Back Right Far"
                 }
               },
               {

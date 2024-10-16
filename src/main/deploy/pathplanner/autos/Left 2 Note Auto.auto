@@ -14,17 +14,11 @@
         {
           "type": "named",
           "data": {
-            "name": "Auto Start"
+            "name": "Auto Shoot Speaker"
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Intake Down"
-          }
-        },
-        {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -34,16 +28,29 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "Rollers In"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake Down"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Rollers In"
+                      }
+                    }
+                  ]
                 }
               }
             ]
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -57,14 +64,33 @@
                 "data": {
                   "name": "Intake Up"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shooter On"
+                }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "Rollers Out"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Auto Eject"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shooter On"
+                }
+              }
+            ]
           }
         }
       ]

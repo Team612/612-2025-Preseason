@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.67,
-      "y": 4.54
+      "x": 0.69,
+      "y": 6.57
     },
-    "rotation": -57.0
+    "rotation": 56.0
   },
   "command": {
     "type": "sequential",
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Leave Right"
+                  "pathName": "Leave Left Far Out"
                 }
               },
               {
@@ -56,7 +56,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Right-Subwoofer"
+                  "pathName": "Back Left Far Out"
                 }
               },
               {
@@ -96,6 +96,6 @@
       ]
     }
   },
-  "folder": "Right",
+  "folder": "Left",
   "choreoAuto": false
 }
