@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.SwerveLib.SwerveModule;
@@ -72,6 +73,7 @@ public class ShuffleboardTabs {
     /* Subsystems */
     private Drivetrain driveSubsystem;
     private Intake intakeSubsystem;
+    private Rollers rollersSubsystem;
     private Shooter shooterSubsystem;
     private Vision visionSubsystem;
     private Climb climbSubsystem;
@@ -82,6 +84,7 @@ public class ShuffleboardTabs {
 
     public void initButton(){
         /* Init subsystems */
+        rollersSubsystem = Rollers.getInstance();
         driveSubsystem = Drivetrain.getInstance();
         intakeSubsystem = Intake.getInstance();
         shooterSubsystem = Shooter.getInstance();
@@ -167,7 +170,7 @@ public class ShuffleboardTabs {
 
         limitForward.setBoolean(intakeSubsystem.getIntakeLimitStateForward());
         limitBackward.setBoolean(intakeSubsystem.getIntakeLimitStateReverse());
-        irSensor.setDouble(intakeSubsystem.getIRSensor());
+        irSensor.setDouble(rollersSubsystem.getIRSensor());
 
         poseEstimatorX.setDouble(poseEstimatorSubsystem.getCurrentPose().getX());
         poseEstimatorY.setDouble(poseEstimatorSubsystem.getCurrentPose().getY());

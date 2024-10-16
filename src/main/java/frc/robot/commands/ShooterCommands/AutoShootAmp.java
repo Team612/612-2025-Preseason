@@ -7,20 +7,19 @@ package frc.robot.commands.ShooterCommands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Shooter;
 
 public class AutoShootAmp extends Command {
   private Shooter m_shooter;
-  private Intake m_intake;
-
+  private Rollers m_rollers;
   private boolean spikeDone;
   private Timer time = new Timer();
   /** Creates a new AutoShootAmp. */
-  public AutoShootAmp(Shooter s, Intake i) {
+  public AutoShootAmp(Shooter s, Rollers r) {
     m_shooter = s;
-    m_intake = i;
-    addRequirements(s, i);
+    m_rollers = r;
+    addRequirements(s, r);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -40,7 +39,7 @@ public class AutoShootAmp extends Command {
     // if(m_shooter.getCurrent() < 6 && spikeDone) {
     if(time.get() >= 5) {
       m_shooter.shoot(Constants.ShooterConstants.shooterLeftSpeedAmp, Constants.ShooterConstants.shooterRightSpeedAmp);
-      m_intake.moveRollers(Constants.IntakeConstants.rollerSpeedOuttake);
+      m_rollers.moveRollers(Constants.IntakeConstants.rollerSpeedOuttake);
     } else {
       m_shooter.shoot(Constants.ShooterConstants.shooterLeftSpeedAmp, Constants.ShooterConstants.shooterRightSpeedAmp);
     }
@@ -53,7 +52,7 @@ public class AutoShootAmp extends Command {
   @Override
   public void end(boolean interrupted) {
     m_shooter.shoot(0, 0);
-    m_intake.moveRollers(0);
+    m_rollers.moveRollers(0);
   }
 
   // Returns true when the command should end.

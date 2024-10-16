@@ -8,18 +8,19 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Shooter;
 
 public class AutoShootStart extends Command {
   private Shooter m_shooter;
-  private Intake m_intake;
+  private Rollers m_rollers;
   private boolean spikeDone;
   private int count = 0;
   private Timer time = new Timer();
   /** Creates a new AutoShootSpeaker. */
-  public AutoShootStart(Shooter s, Intake i) {
+  public AutoShootStart(Shooter s, Rollers i) {
     m_shooter = s;
-    m_intake = i;
+    m_rollers = i;
     addRequirements(s, i);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -46,7 +47,7 @@ public class AutoShootStart extends Command {
     // if(m_shooter.getCurrent() < 16 && spikeDone) {
       if(time.get() >= 5) {
         m_shooter.shoot(Constants.ShooterConstants.shooterLeftSpeedSpeaker, Constants.ShooterConstants.shooterRightSpeedSpeaker);
-        m_intake.moveRollers(Constants.IntakeConstants.rollerSpeedOuttake);
+        m_rollers.moveRollers(Constants.IntakeConstants.rollerSpeedOuttake);
       } else {
         m_shooter.shoot(Constants.ShooterConstants.shooterLeftSpeedSpeaker, Constants.ShooterConstants.shooterRightSpeedSpeaker);
       }
@@ -60,7 +61,7 @@ public class AutoShootStart extends Command {
   public void end(boolean interrupted) {
     time.stop();
     time.reset();
-    m_intake.moveRollers(0);
+    m_rollers.moveRollers(0);
   }
 
   // Returns true when the command should end.

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Vision;
 
 public class AutoIntake extends Command {
@@ -17,15 +18,17 @@ public class AutoIntake extends Command {
   private Drivetrain m_drivetrain;
   private Vision m_vision;
   private Intake m_intake;
+  private Rollers m_rollers;
 
   private double initialAngle = 0;
   private double goalAngle = 0;
   private double count = 0;
-  public AutoIntake(Drivetrain d, Vision v, Intake i) {
+  public AutoIntake(Drivetrain d, Vision v, Intake i, Rollers r) {
     m_drivetrain = d;
     m_vision = v;
     m_intake = i;
-    addRequirements(d, v, i);
+    m_rollers = r;
+    addRequirements(d, v, i, r);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -42,12 +45,12 @@ public class AutoIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_intake.getIRSensor() > 0.3) {
+    if(m_rollers.getIRSensor() > 0.3) {
       count++;
     } else {
       count = 0;
     }
-    m_intake.moveRollers(-Constants.IntakeConstants.rollerSpeedIntake);
+    m_rollers.moveRollers(-Constants.IntakeConstants.rollerSpeedIntake);
     double curAngle = 0;
     if(Math.abs(goalAngle - (m_drivetrain.getNavxAngle().getDegrees() - initialAngle)) > 0.1) {
       curAngle = goalAngle - (m_drivetrain.getNavxAngle().getDegrees() - initialAngle);
@@ -61,7 +64,7 @@ public class AutoIntake extends Command {
   @Override
   public void end(boolean interrupted) {
     m_drivetrain.driveRobotRelative(new Translation2d(0, 0), 0, false);
-    m_intake.moveRollers(0);
+    m_rollers.moveRollers(0);
   }
 
   // Returns true when the command should end.

@@ -12,6 +12,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import frc.robot.controls.ControlMap;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -43,7 +45,6 @@ import frc.robot.commands.TrajectoryCommands.FollowNote;
 import frc.robot.commands.TrajectoryCommands.MoveToNote;
 import frc.robot.commands.TrajectoryCommands.RunOnTheFly;
 import frc.robot.commands.TrajectoryCommands.TrajectoryCreation;
-import frc.robot.controls.ControlMap;
 import frc.robot.commands.CharacterizationCommands.FeedForwardCharacterization;
 import frc.robot.commands.CharacterizationCommands.forwardMeter;
 import frc.robot.commands.CharacterizationCommands.FeedForwardCharacterization.FeedForwardCharacterizationData;
@@ -52,6 +53,7 @@ import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PoseEstimator;
+import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.TrajectoryConfiguration;
 import frc.robot.subsystems.Vision;
@@ -63,6 +65,7 @@ public class RobotContainer {
   private final PoseEstimator m_poseEstimator = PoseEstimator.getPoseEstimatorInstance();
   private final TrajectoryConfiguration m_trajectoryConfig = TrajectoryConfiguration.getInstance();
   private final Vision m_vision = Vision.getVisionInstance();
+  private final Rollers m_rollers = Rollers.getInstance();
   private final Intake m_intake = Intake.getInstance();
   private final Shooter m_shooter = Shooter.getInstance();
   private final Climb m_climb = Climb.getInstance();
@@ -87,20 +90,20 @@ public class RobotContainer {
   // Gunner commands
   private final IntakeDown m_intakeDown = new IntakeDown(m_intake);
   private final IntakeUp m_intakeUp = new IntakeUp(m_intake);
-  private final MoveRollersOut m_moveRollersOut = new MoveRollersOut(m_intake);
-  private final MoveRollersIn m_moveRollersIn = new MoveRollersIn(m_intake);
+  private final MoveRollersOut m_moveRollersOut = new MoveRollersOut(m_rollers);
+  private final MoveRollersIn m_moveRollersIn = new MoveRollersIn(m_rollers);
   private final ShootNoteSpeaker m_shootSpeaker = new ShootNoteSpeaker(m_shooter);
   private final ShootNoteAmp m_shootAmp = new ShootNoteAmp(m_shooter);
   private final ShooterLeftMotor m_shootLeftMotor = new ShooterLeftMotor(m_shooter);
   private final ShooterRightMotor m_shootRightMotor = new ShooterRightMotor(m_shooter);
-  private final AutoShootSpeaker m_autoShootSpeaker = new AutoShootSpeaker(m_shooter, m_intake);
-  private final AutoShootAmp m_autoShootAmp = new AutoShootAmp(m_shooter, m_intake);
+  private final AutoShootSpeaker m_autoShootSpeaker = new AutoShootSpeaker(m_shooter, m_rollers);
+  private final AutoShootAmp m_autoShootAmp = new AutoShootAmp(m_shooter, m_rollers);
   private final SpeedUpSpeaker m_speedUpSpeaker = new SpeedUpSpeaker(m_shooter);
   private final SpeedUpAmp m_speedUpAmp = new SpeedUpAmp(m_shooter);
-  private final AutoIntake autoIntake = new AutoIntake(m_drivetrain, m_vision, m_intake);
+  private final AutoIntake autoIntake = new AutoIntake(m_drivetrain, m_vision, m_intake, m_rollers);
   private final ClimbTeleop m_climbUp = new ClimbTeleop(m_climb);
-  private final AutoShootStart m_autoStart = new AutoShootStart(m_shooter, m_intake);
-  private final FeedNote m_feedNote = new FeedNote(m_intake);
+  private final AutoShootStart m_autoStart = new AutoShootStart(m_shooter, m_rollers);
+  private final FeedNote m_feedNote = new FeedNote(m_rollers);
 
   //Drive subsystems declarations 
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();

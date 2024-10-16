@@ -21,17 +21,17 @@ import com.revrobotics.SparkLimitSwitch;
 public class Intake extends SubsystemBase {
   private static final double DEADZONE = 0.05;
   private CANSparkMax m_IntakePivotMotor;
-  private TalonSRX m_IntakeRollerMotor;
+  // private TalonSRX m_IntakeRollerMotor;
 
   private double realPivotSpeed = Constants.IntakeConstants.intakeUpSpeed;  
-  private double realRollerSpeed = Constants.IntakeConstants.rollerSpeedIntake;  
+  // private double realRollerSpeed = Constants.IntakeConstants.rollerSpeedIntake;  
 
-  private AnalogInput IRSensor = new AnalogInput(Constants.IntakeConstants.IRport);
+  // private AnalogInput IRSensor = new AnalogInput(Constants.IntakeConstants.IRport);
   static Intake instance = null;
   /** Creates a new Intake. */
   public Intake() {
     m_IntakePivotMotor = new CANSparkMax(Constants.IntakeConstants.pivotID, MotorType.kBrushless);
-    m_IntakeRollerMotor = new TalonSRX(Constants.IntakeConstants.rollerID);
+    // m_IntakeRollerMotor = new TalonSRX(Constants.IntakeConstants.rollerID);
     m_IntakePivotMotor.setIdleMode(IdleMode.kBrake);
   }
 
@@ -61,15 +61,15 @@ public class Intake extends SubsystemBase {
     m_IntakePivotMotor.set(rotate);
   }
 
-  // move intake rollers
-  public void moveRollers(double rotate){
-    if(Math.abs(rotate) < DEADZONE) rotate = 0;
-    m_IntakeRollerMotor.set(TalonSRXControlMode.PercentOutput, rotate);
-  }
+  // // move intake rollers
+  // public void moveRollers(double rotate){
+  //   if(Math.abs(rotate) < DEADZONE) rotate = 0;
+  //   m_IntakeRollerMotor.set(TalonSRXControlMode.PercentOutput, rotate);
+  // }
 
-  public double getIRSensor(){
-    return IRSensor.getVoltage();
-  }
+  // public double getIRSensor(){
+  //   return IRSensor.getVoltage();
+  // }
 
   @Override
   public void periodic() {
@@ -79,9 +79,9 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
 
     SmartDashboard.putNumber(Constants.IntakeConstants.pivotUpKey, m_IntakePivotMotor.getOutputCurrent());  
-    SmartDashboard.putNumber(Constants.IntakeConstants.rollerInKey, m_IntakeRollerMotor.getOutputCurrent());  
+    // SmartDashboard.putNumber(Constants.IntakeConstants.rollerInKey, m_IntakeRollerMotor.getOutputCurrent());  
 
     Constants.ShooterConstants.shooterLeftSpeedSpeaker = Preferences.getDouble(Constants.IntakeConstants.pivotUpKey, realPivotSpeed);  
-    Constants.ShooterConstants.shooterRightSpeedSpeaker = Preferences.getDouble(Constants.IntakeConstants.rollerInKey, realRollerSpeed); 
+    // Constants.ShooterConstants.shooterRightSpeedSpeaker = Preferences.getDouble(Constants.IntakeConstants.rollerInKey, realRollerSpeed); 
   }
 }
