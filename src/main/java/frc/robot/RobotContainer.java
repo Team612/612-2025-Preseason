@@ -12,6 +12,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import frc.robot.Controls.ControlMap;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,7 +29,6 @@ import frc.robot.commands.IntakeCommands.IntakeDown;
 import frc.robot.commands.IntakeCommands.IntakeUp;
 import frc.robot.commands.IntakeCommands.MoveRollersIn;
 import frc.robot.commands.IntakeCommands.MoveRollersOut;
-import frc.robot.commands.IntakeCommands.AutoEject;
 import frc.robot.commands.ShooterCommands.AutoShootAmp;
 import frc.robot.commands.ShooterCommands.AutoShootSpeaker;
 import frc.robot.commands.ShooterCommands.AutoShootStart;
@@ -35,6 +36,7 @@ import frc.robot.commands.ShooterCommands.ShootNoteAmp;
 import frc.robot.commands.ShooterCommands.ShootNoteSpeaker;
 import frc.robot.commands.ShooterCommands.ShooterLeftMotor;
 import frc.robot.commands.ShooterCommands.ShooterRightMotor;
+import frc.robot.commands.IntakeCommands.AutoEject;
 import frc.robot.commands.ShooterCommands.SpeedUpAmp;
 import frc.robot.commands.ShooterCommands.SpeedUpSpeaker;
 import frc.robot.commands.TrajectoryCommands.AlignAmp;
@@ -44,7 +46,6 @@ import frc.robot.commands.TrajectoryCommands.FollowNote;
 import frc.robot.commands.TrajectoryCommands.MoveToNote;
 import frc.robot.commands.TrajectoryCommands.RunOnTheFly;
 import frc.robot.commands.TrajectoryCommands.TrajectoryCreation;
-import frc.robot.Controls.ControlMap;
 import frc.robot.commands.CharacterizationCommands.FeedForwardCharacterization;
 import frc.robot.commands.CharacterizationCommands.forwardMeter;
 import frc.robot.commands.CharacterizationCommands.FeedForwardCharacterization.FeedForwardCharacterizationData;
@@ -93,6 +94,7 @@ public class RobotContainer {
   private final MoveRollersOut m_moveRollersOut = new MoveRollersOut(m_rollers);
   private final MoveRollersIn m_moveRollersIn = new MoveRollersIn(m_rollers);
   private final ShootNoteSpeaker m_shootSpeaker = new ShootNoteSpeaker(m_shooter);
+  private final AutoEject m_autoeject = new AutoEject(m_rollers);
   private final ShootNoteAmp m_shootAmp = new ShootNoteAmp(m_shooter);
   private final ShooterLeftMotor m_shootLeftMotor = new ShooterLeftMotor(m_shooter);
   private final ShooterRightMotor m_shootRightMotor = new ShooterRightMotor(m_shooter);
@@ -104,18 +106,17 @@ public class RobotContainer {
   private final ClimbTeleop m_climbUp = new ClimbTeleop(m_climb);
   private final AutoShootStart m_autoStart = new AutoShootStart(m_shooter, m_rollers);
   private final FeedNote m_feedNote = new FeedNote(m_rollers);
-  private final AutoEject m_AutoEject = new AutoEject(m_rollers);
 
   //Drive subsystems declarations 
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 
 
-  //Speaker auto command
-  private final Command scoreSpeaker = new SequentialCommandGroup(
-    new ParallelCommandGroup(m_alignSpeaker).alongWith(m_speedUpSpeaker)
-    .andThen(m_moveRollersOut)
-  ).until(() -> ControlMap.m_gunnerController.getRawAxis(1) >= 0.1);
+  // Speaker auto command
+  // private final Command scoreSpeaker = new SequentialCommandGroup(
+  //   new ParallelCommandGroup(m_alignSpeaker).alongWith(m_speedUpSpeaker)
+  //   .andThen(m_moveRollersOut)
+  // ).until(() -> ControlMap.m_gunnerController.getRawAxis(1) >= 0.1);
 
   // // Amp auto command
   // private final Command scoreAmp = new SequentialCommandGroup(
@@ -216,10 +217,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Auto Start", m_autoStart);
     NamedCommands.registerCommand("Feed Note", m_feedNote);
     NamedCommands.registerCommand("Apriltag Align", m_alignSpeaker);
-    NamedCommands.registerCommand("Auto Eject", m_AutoEject);
     
     //Shooter (MANUAL)
     NamedCommands.registerCommand("Shooter On", m_shootSpeaker);
+    NamedCommands.registerCommand("Auto Eject", m_autoeject);
 
     //Autonomous Commands
     NamedCommands.registerCommand("Auto Speaker", m_autoShootSpeaker);
