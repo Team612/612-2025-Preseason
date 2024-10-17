@@ -12,7 +12,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
-import frc.robot.Controls.ControlMap;
+import frc.robot.controls.ControlMap;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,6 +29,7 @@ import frc.robot.commands.IntakeCommands.IntakeDown;
 import frc.robot.commands.IntakeCommands.IntakeUp;
 import frc.robot.commands.IntakeCommands.MoveRollersIn;
 import frc.robot.commands.IntakeCommands.MoveRollersOut;
+import frc.robot.commands.IntakeCommands.AutoEject;
 import frc.robot.commands.ShooterCommands.AutoShootAmp;
 import frc.robot.commands.ShooterCommands.AutoShootSpeaker;
 import frc.robot.commands.ShooterCommands.AutoShootStart;
@@ -104,17 +105,18 @@ public class RobotContainer {
   private final ClimbTeleop m_climbUp = new ClimbTeleop(m_climb);
   private final AutoShootStart m_autoStart = new AutoShootStart(m_shooter, m_rollers);
   private final FeedNote m_feedNote = new FeedNote(m_rollers);
+  private final AutoEject m_AutoEject = new AutoEject(m_rollers);
 
   //Drive subsystems declarations 
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 
 
-  // Speaker auto command
-  // private final Command scoreSpeaker = new SequentialCommandGroup(
-  //   new ParallelCommandGroup(m_alignSpeaker).alongWith(m_speedUpSpeaker)
-  //   .andThen(m_moveRollersOut)
-  // ).until(() -> ControlMap.m_gunnerController.getRawAxis(1) >= 0.1);
+  //Speaker auto command
+  private final Command scoreSpeaker = new SequentialCommandGroup(
+    new ParallelCommandGroup(m_alignSpeaker).alongWith(m_speedUpSpeaker)
+    .andThen(m_moveRollersOut)
+  ).until(() -> ControlMap.m_gunnerController.getRawAxis(1) >= 0.1);
 
   // // Amp auto command
   // private final Command scoreAmp = new SequentialCommandGroup(
@@ -215,6 +217,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Auto Start", m_autoStart);
     NamedCommands.registerCommand("Feed Note", m_feedNote);
     NamedCommands.registerCommand("Apriltag Align", m_alignSpeaker);
+    NamedCommands.registerCommand("Auto Eject", m_AutoEject);
     
     //Shooter (MANUAL)
     NamedCommands.registerCommand("Shooter On", m_shootSpeaker);
