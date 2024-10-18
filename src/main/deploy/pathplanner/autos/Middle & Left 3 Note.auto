@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Auto Shoot Speaker"
+            "name": "Auto Speaker"
           }
         },
         {
@@ -28,22 +28,15 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Intake Down"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Rollers In"
-                      }
-                    }
-                  ]
+                  "name": "Intake Down"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Rollers In"
                 }
               }
             ]
@@ -104,22 +97,15 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Intake Down"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Rollers In"
-                      }
-                    }
-                  ]
+                  "name": "Intake Down"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Rollers In"
                 }
               }
             ]

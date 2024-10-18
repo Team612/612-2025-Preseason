@@ -189,10 +189,10 @@ public final class Constants {
     
     public static final int pivotID = 9;
     public static final int rollerID = 10;
-    public static final double intakeUpSpeed = 0.3;
-    public static final double intakeDownSpeed = -0.3;
-    public static final double rollerSpeedIntake = 0.5;
-    public static double rollerSpeedOuttake = 0.7;
+    public static final double intakeUpSpeed = 0.5;
+    public static final double intakeDownSpeed = -0.6;
+    public static final double rollerSpeedIntake = 0.4; //0.5
+    public static final double rollerSpeedOuttake = 0.7;
     public static final int IRport = 0;
   }
 

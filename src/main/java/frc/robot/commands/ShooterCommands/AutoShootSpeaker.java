@@ -54,6 +54,7 @@ public class AutoShootSpeaker extends Command {
   public void end(boolean interrupted) {
     m_shooter.shoot(0, 0);
     m_rollers.moveRollers(0);
+    time.stop();
     time.reset();
   }
 
