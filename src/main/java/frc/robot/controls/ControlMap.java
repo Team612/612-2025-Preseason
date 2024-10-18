@@ -1,4 +1,4 @@
-package frc.robot.Controls;
+package frc.robot.controls;
 
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
