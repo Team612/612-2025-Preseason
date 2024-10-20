@@ -24,6 +24,8 @@ import frc.robot.commands.DriveCommands.DefaultDrive;
 import frc.robot.commands.DriveCommands.FieldOrientedDrive;
 import frc.robot.commands.DriveCommands.LeaveZone;
 import frc.robot.commands.IntakeCommands.AutoIntake;
+import frc.robot.commands.IntakeCommands.AutoIntakeDown;
+import frc.robot.commands.IntakeCommands.AutoIntakeUp;
 import frc.robot.commands.IntakeCommands.FeedNote;
 import frc.robot.commands.IntakeCommands.IntakeDown;
 import frc.robot.commands.IntakeCommands.IntakeUp;
@@ -104,6 +106,8 @@ public class RobotContainer {
   private final SpeedUpAmp m_speedUpAmp = new SpeedUpAmp(m_shooter);
   private final AutoIntake autoIntake = new AutoIntake(m_drivetrain, m_vision, m_intake, m_rollers);
   private final ClimbTeleop m_climbUp = new ClimbTeleop(m_climb);
+  private final AutoIntakeDown m_autointakedown = new AutoIntakeDown(m_intake);
+  private final AutoIntakeUp m_autointakeup = new AutoIntakeUp(m_intake);
   private final AutoShootStart m_autoStart = new AutoShootStart(m_shooter, m_rollers);
   private final FeedNote m_feedNote = new FeedNote(m_rollers);
 
@@ -210,8 +214,8 @@ public class RobotContainer {
 
   private void configureAutoBuilderCommands(){
     //Intake (MANUAL)
-    NamedCommands.registerCommand("Intake Down", m_intakeDown);
-    NamedCommands.registerCommand("Intake Up", m_intakeUp);
+    NamedCommands.registerCommand("Intake Down", m_autointakedown);
+    NamedCommands.registerCommand("Intake Up", m_autointakeup);
     NamedCommands.registerCommand("Rollers Out", m_moveRollersOut);
     NamedCommands.registerCommand("Rollers In", m_moveRollersIn);
     NamedCommands.registerCommand("Auto Start", m_autoStart);
