@@ -145,24 +145,24 @@ public class RobotContainer {
   }
 
   private void configureShuffleBoardBindings(){
-    m_chooser.addOption("Run on Fly", m_runOnTheFly);
-    m_chooser.addOption("Move to Note", m_moveToNote);
-    m_chooser.addOption("Leave Zone", m_leaveZone);
-    m_chooser.addOption("forward Meter", m_forwardMeter);
-    //m_chooser.addOption("Score Amp", scoreAmp);
-    //m_chooser.addOption("Auto Intake", autoIntake);
-    m_chooser.addOption("auto speaker", m_autoShootSpeaker);
-    m_chooser.addOption("auto amp", m_autoShootAmp);
-    m_chooser.addOption("align speaker", m_alignSpeaker);
-    m_chooser.addOption("Align Manual", m_manualAlign);
-    // m_chooser.addOption("Leave Starting Zone Subwoofer", m_trajectoryConfig.followPathGui("Leave Zone Subwoofer"));
-    // m_chooser.addOption("Score and Leave", scoreAndLeave);
-    m_chooser.addOption("Swerve Characterization", new FeedForwardCharacterization(
-              m_drivetrain,
-              true,
-              new FeedForwardCharacterizationData("drive"),
-              m_drivetrain::runCharacterizationVolts,
-              m_drivetrain::getCharacterizationVelocity));
+    // m_chooser.addOption("Run on Fly", m_runOnTheFly);
+    // m_chooser.addOption("Move to Note", m_moveToNote);
+    // m_chooser.addOption("Leave Zone", m_leaveZone);
+    // m_chooser.addOption("forward Meter", m_forwardMeter);
+    // //m_chooser.addOption("Score Amp", scoreAmp);
+    // //m_chooser.addOption("Auto Intake", autoIntake);
+    // m_chooser.addOption("auto speaker", m_autoShootSpeaker);
+    // m_chooser.addOption("auto amp", m_autoShootAmp);
+    // m_chooser.addOption("align speaker", m_alignSpeaker);
+    // m_chooser.addOption("Align Manual", m_manualAlign);
+    // // m_chooser.addOption("Leave Starting Zone Subwoofer", m_trajectoryConfig.followPathGui("Leave Zone Subwoofer"));
+    // // m_chooser.addOption("Score and Leave", scoreAndLeave);
+    // m_chooser.addOption("Swerve Characterization", new FeedForwardCharacterization(
+    //           m_drivetrain,
+    //           true,
+    //           new FeedForwardCharacterizationData("drive"),
+    //           m_drivetrain::runCharacterizationVolts,
+    //           m_drivetrain::getCharacterizationVelocity));
 
     List<String> autos = PathPlannerUtil.getExistingPaths();
     for (String auto : autos) {
@@ -179,8 +179,8 @@ public class RobotContainer {
     ControlMap.m_driverController.y().onTrue(new InstantCommand(() -> m_drivetrain.resetAlignment()));
     ControlMap.m_driverController.leftBumper().onTrue(new InstantCommand(() -> m_drivetrain.zeroGyro()));
     ControlMap.m_driverController.b().toggleOnTrue(m_defaultDrive);
-    ControlMap.m_driverController.a().onTrue(m_alignSpeaker);
-    ControlMap.m_driverController.x().onTrue(m_alignAmp);
+   // ControlMap.m_driverController.a().onTrue(m_alignSpeaker);
+   // ControlMap.m_driverController.x().onTrue(m_alignAmp);
 
     // Gunner button bindings
     ControlMap.m_gunnerController.a().whileTrue(m_intakeDown);
