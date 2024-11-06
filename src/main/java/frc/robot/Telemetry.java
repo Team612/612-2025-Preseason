@@ -45,7 +45,7 @@ public class Telemetry {
 
     /* Keep a reference of the last pose to calculate the speeds */
     private Pose2d m_lastPose = new Pose2d();
-    private double lastTime = Utils.getCurrentTimeSeconds();
+    private double lastTime = Utils.getCurrentTimeSeconds(); 
 
     /* Mechanisms to represent the swerve module states */
     private final Mechanism2d[] m_moduleMechanisms = new Mechanism2d[] {
@@ -81,7 +81,7 @@ public class Telemetry {
         fieldPub.set(new double[] {
             pose.getX(),
             pose.getY(),
-            pose.getRotation().getDegrees()
+            pose.getRotation().getDegrees() //getting angle from pose
         });
 
         /* Telemeterize the robot's general speeds */
