@@ -70,7 +70,7 @@ public class ShuffleboardTabs {
     private GenericEntry limitRightClimbDown;
 
     /* Subsystems */
-    private Drivetrain driveSubsystem;
+    private Drivetrain driveSubsystem = Drivetrain.getInstance();
     private Intake intakeSubsystem;
     private Shooter shooterSubsystem;
     private Vision visionSubsystem;
@@ -82,7 +82,7 @@ public class ShuffleboardTabs {
 
     public void initButton(){
         /* Init subsystems */
-        driveSubsystem = Drivetrain.getInstance();
+        // driveSubsystem = Drivetrain.getInstance();
         intakeSubsystem = Intake.getInstance();
         shooterSubsystem = Shooter.getInstance();
         visionSubsystem = Vision.getVisionInstance();
@@ -146,12 +146,24 @@ public class ShuffleboardTabs {
 
         
     }
-
+    double last = 0.0;
     public void updateButtons(){
-        mod1_velocity.setDouble(states[0].speedMetersPerSecond);
+        // mod1_velocity.setDouble(states[0].speedMetersPerSecond);
+
+        // lets user change values directly from shuffleboard
+        double curr = mod1_velocity.get().getDouble();
+        if (curr>last+10){
+            mod1_velocity.setDouble(curr);
+            states[0].speedMetersPerSecond = curr;
+        }
+        else
+            mod1_velocity.setDouble(states[0].speedMetersPerSecond);
+        last = mod1_velocity.get().getDouble();
+
         mod2_velocity.setDouble(states[1].speedMetersPerSecond);
         mod3_velocity.setDouble(states[2].speedMetersPerSecond);
         mod4_velocity.setDouble(states[3].speedMetersPerSecond);
+
 
         mod1_angle.setDouble(states[0].angle.getDegrees());
         mod2_angle.setDouble(states[1].angle.getDegrees());
@@ -169,7 +181,12 @@ public class ShuffleboardTabs {
         limitBackward.setBoolean(intakeSubsystem.getIntakeLimitStateReverse());
         irSensor.setDouble(intakeSubsystem.getIRSensor());
 
-        poseEstimatorX.setDouble(poseEstimatorSubsystem.getCurrentPose().getX());
+        // if (poseEstimatorAngle.get() > (poseEstimatorSubsystem.getCurrentPose().getX()))
+            // poseEstimatorX.setDouble(poseEstimatorAngle.get());
+        // else
+            poseEstimatorX.setDouble(poseEstimatorSubsystem.getCurrentPose().getX());
+
+
         poseEstimatorY.setDouble(poseEstimatorSubsystem.getCurrentPose().getY());
         poseEstimatorAngle.setDouble(poseEstimatorSubsystem.getCurrentPose().getRotation().getDegrees());
         poseEstimatorRadians.setDouble(poseEstimatorSubsystem.getCurrentPose().getRotation().getRadians());
