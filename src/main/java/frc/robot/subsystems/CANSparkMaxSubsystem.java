@@ -77,5 +77,7 @@ public class CANSparkMaxSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    //System.out.println(availableMotors.get(0).get());
+    System.out.println(availableMotors.get(0).getBusVoltage());
   }
 }
