@@ -115,8 +115,8 @@ public class TunerConstants {
     private static final double kFrontLeftEncoderOffset = -0.282470703125;
     private static final boolean kFrontLeftSteerInvert = true;
 
-    private static final double kFrontLeftXPosInches = 9.117;
-    private static final double kFrontLeftYPosInches = 9.117;
+    public static final double kFrontLeftXPosInches = 9.117;
+    public static final double kFrontLeftYPosInches = 9.117;
 
     // Front Right
     private static final int kFrontRightDriveMotorId = 8;
@@ -125,8 +125,8 @@ public class TunerConstants {
     private static final double kFrontRightEncoderOffset = 0.256591796875;
     private static final boolean kFrontRightSteerInvert = true;
 
-    private static final double kFrontRightXPosInches = 9.117;
-    private static final double kFrontRightYPosInches = -9.117;
+    public static final double kFrontRightXPosInches = 9.117;
+    public static final double kFrontRightYPosInches = -9.117;
 
     // Back Left
     private static final int kBackLeftDriveMotorId = 4;
@@ -135,8 +135,8 @@ public class TunerConstants {
     private static final double kBackLeftEncoderOffset = 0.07666015625;
     private static final boolean kBackLeftSteerInvert = true;
 
-    private static final double kBackLeftXPosInches = -9.117;
-    private static final double kBackLeftYPosInches = 9.117;
+    public static final double kBackLeftXPosInches = -9.117;
+    public static final double kBackLeftYPosInches = 9.117;
 
     // Back Right
     private static final int kBackRightDriveMotorId = 6;
@@ -145,8 +145,8 @@ public class TunerConstants {
     private static final double kBackRightEncoderOffset = 0.470703125;
     private static final boolean kBackRightSteerInvert = true;
 
-    private static final double kBackRightXPosInches = -9.117;
-    private static final double kBackRightYPosInches = -9.117;
+    public static final double kBackRightXPosInches = -9.117;
+    public static final double kBackRightYPosInches = -9.117;
 
 
     private static final SwerveModuleConstants FrontLeft = ConstantCreator.createModuleConstants(
