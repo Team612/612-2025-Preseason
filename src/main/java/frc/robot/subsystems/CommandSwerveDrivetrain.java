@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrainConstants;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
@@ -50,6 +51,12 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     public Rotation2d getRotation(){
         return new Rotation2d();
+    }
+
+    public void resetAlignment(){
+        for (SwerveModule x: TunerConstants.DriveTrain.Modules){
+            x.resetPosition();
+        }
     }
 
     public SwerveModulePosition[] getSwervePoses(){

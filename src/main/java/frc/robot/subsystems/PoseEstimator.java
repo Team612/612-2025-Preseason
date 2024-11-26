@@ -79,9 +79,10 @@ public class PoseEstimator extends SubsystemBase {
       @Override
       public void periodic() {
         setCurrentPose(m_vision.getAprilTagPose());
-        poseEstimator.update(
-           m_swerve.getRotation(),
-          m_swerve.getSwervePoses());
+        // SmartDashboard.putData();
+        // poseEstimator.update(
+        //    m_swerve.getRotation(),
+        //   m_swerve.getSwervePoses());
     }
     
     
