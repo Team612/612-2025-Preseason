@@ -32,7 +32,6 @@ public class CANSparkMaxSubsystem extends SubsystemBase {
       motorArray[i] = availableMotors.get(i);
     }
   }
-  
   // manully set initial motor IDS
   /*
   public CANSparkMaxSubsystem() {
@@ -53,7 +52,7 @@ public class CANSparkMaxSubsystem extends SubsystemBase {
     }
   }
 
-  public void setMotorsBasedOnIndex(int index,double speed){
+  public void setMotorsBasedOnIndex(int index ,double speed){
     motorArray[index].set(speed);
   }
 
@@ -65,6 +64,7 @@ public class CANSparkMaxSubsystem extends SubsystemBase {
   }
 
   public void setID(int motorIndex, int newID){
+    motorArray[motorIndex].set(0.0);
     for (int i = 0; i < availableMotors.size(); i++){
       if (availableMotors.get(i).getDeviceId() == newID){
         motorArray[motorIndex] = availableMotors.get(i);
@@ -77,7 +77,9 @@ public class CANSparkMaxSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //System.out.println(availableMotors.get(0).get());
-    System.out.println(availableMotors.get(0).getBusVoltage());
+    // for (int i = 0; i < availableMotors.size(); i++){
+    //   System.out.print(availableMotors.get(i).get()+" ");
+    // }
+    // System.out.println();
   }
 }
