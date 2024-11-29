@@ -77,9 +77,9 @@ public class CANSparkMaxSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // for (int i = 0; i < availableMotors.size(); i++){
-    //   System.out.print(availableMotors.get(i).get()+" ");
-    // }
-    // System.out.println();
+    for (int i = 0; i < availableMotors.size(); i++){
+      System.out.print(availableMotors.get(i).get()+" ");
+    }
+    System.out.println();
   }
 }

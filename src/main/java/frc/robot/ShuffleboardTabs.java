@@ -15,6 +15,7 @@ public class ShuffleboardTabs {
     private GenericEntry[] motorId = new GenericEntry[4];
     private GenericEntry[] motorSpeeds = new GenericEntry[4];
     private GenericEntry[] syncButtons = new GenericEntry[4];
+    private GenericEntry[] inverseButtons = new GenericEntry[4];
     private GenericEntry allspeedsetter;
 
     // gets subsystem
@@ -28,6 +29,7 @@ public class ShuffleboardTabs {
                 motorId[i] = motorsTab.add("Motor " + (i +1) + "CAN ID", i+1).withPosition(i,1).withSize(1,1).getEntry();
                 motorSpeeds[i] = motorsTab.add("Motor " + (i+1) + "Speed", 0.0).withWidget(BuiltInWidgets.kNumberSlider).withPosition(i,2).withSize(1,1).withProperties(Map.of("min", -1, "max", 1)).getEntry();
                 syncButtons[i] = motorsTab.add("Sync Motor " + (i +1), false).withWidget(BuiltInWidgets.kToggleButton).withPosition(i, 3).getEntry();
+                inverseButtons[i] = motorsTab.add("Inverse " + (i +1), false).withWidget(BuiltInWidgets.kToggleButton).withPosition(i, 4).getEntry();
         }
     }
 
@@ -56,7 +58,10 @@ public class ShuffleboardTabs {
             if (syncButtons[i].get().getBoolean() && keepCheckingForSync && currSpeed[i]!=lastSpeed[i]){
                 for(int j = 0; j < motorSpeeds.length; j++){
                     if (syncButtons[j].get().getBoolean())
-                        cansparkmax.setMotorsBasedOnIndex(j,motorSpeeds[i].get().getDouble());
+                        if (inverseButtons[j].get().getBoolean() && i!=j)
+                            cansparkmax.setMotorsBasedOnIndex(j,-motorSpeeds[i].get().getDouble());
+                        else
+                            cansparkmax.setMotorsBasedOnIndex(j,motorSpeeds[i].get().getDouble());
                 }
                 keepCheckingForSync = false;
             }
