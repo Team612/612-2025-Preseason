@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.generated.TunerConstants;
+
+import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 
 /**
  * Class that extends the Phoenix SwerveDrivetrain class and implements
@@ -43,6 +46,11 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         if (Utils.isSimulation()) {
             startSimThread();
         }
+    }
+
+
+    public Command applyRequestTorque(double x) {
+        return run(() -> TunerConstants.torqueController.withVelocity(x));
     }
 
     public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {
