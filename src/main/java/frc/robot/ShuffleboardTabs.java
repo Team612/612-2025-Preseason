@@ -54,10 +54,13 @@ public class ShuffleboardTabs {
         // sets real values
         // checks if the user actually inputed something first so it doesn't spam inputs to real variables
         boolean keepCheckingForSync = true;
+        boolean changeAllSpeedSetter = true;
         for (int i = 0; i < motorSpeeds.length; i++){
             if (syncButtons[i].get().getBoolean() && keepCheckingForSync && currSpeed[i]!=lastSpeed[i]){
+                changeAllSpeedSetter = false;
+                allspeedsetter.setDouble(0.0);
                 for(int j = 0; j < motorSpeeds.length; j++){
-                    if (syncButtons[j].get().getBoolean())
+                    if (syncButtons[j].get().getBoolean())                        
                         if (inverseButtons[j].get().getBoolean() && i!=j)
                             cansparkmax.setMotorsBasedOnIndex(j,-motorSpeeds[i].get().getDouble());
                         else
@@ -65,10 +68,13 @@ public class ShuffleboardTabs {
                 }
                 keepCheckingForSync = false;
             }
-            else if (!syncButtons[i].get().getBoolean() && currSpeed[i]!=lastSpeed[i])
+            else if (!syncButtons[i].get().getBoolean() && currSpeed[i]!=lastSpeed[i]){
                 cansparkmax.setMotorsBasedOnIndex(i,motorSpeeds[i].get().getDouble());
+                changeAllSpeedSetter = false;
+                allspeedsetter.setDouble(0.0);
+            }
         }
-        if (lastallspeedsetter!=currallspeedsetter){
+        if (lastallspeedsetter!=currallspeedsetter && changeAllSpeedSetter){
             cansparkmax.setAllSpeed(allspeedsetter.get().getDouble());
         }
         for(int i = 0; i < 4; i++){
