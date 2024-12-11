@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveCommands.DefaultDrive;
 import frc.robot.commands.DriveCommands.FieldOrientedDrive;
-import frc.robot.commands.IntakeCommands.IntakeDown;
-import frc.robot.commands.IntakeCommands.IntakeUp;
-import frc.robot.commands.IntakeCommands.MoveRollers;
+//import frc.robot.commands.IntakeCommands.IntakeDown;
+//import frc.robot.commands.IntakeCommands.IntakeUp;
+//import frc.robot.commands.IntakeCommands.MoveRollers;
 import frc.robot.commands.ShooterCommands.ShootNoteAmp;
 import frc.robot.commands.ShooterCommands.ShootNoteSpeaker;
 import frc.robot.commands.ShooterCommands.ShooterLeftMotor;
@@ -23,11 +23,11 @@ import frc.robot.commands.TrajectoryCommands.FollowNote;
 import frc.robot.commands.TrajectoryCommands.MoveToNote;
 import frc.robot.commands.TrajectoryCommands.RunOnTheFly;
 import frc.robot.commands.TrajectoryCommands.TrajectoryCreation;
-import frc.robot.Controls.ControlMap;
+import frc.robot.controls.ControlMap;
 import frc.robot.commands.CharacterizationCommands.FeedForwardCharacterization;
 import frc.robot.commands.CharacterizationCommands.FeedForwardCharacterization.FeedForwardCharacterizationData;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
+//import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.TrajectoryConfiguration;
@@ -39,7 +39,7 @@ public class RobotContainer {
   private final PoseEstimator m_poseEstimator = PoseEstimator.getPoseEstimatorInstance();
   private final TrajectoryConfiguration m_trajectoryConfig = TrajectoryConfiguration.getInstance();
   private final Vision m_vision = Vision.getVisionInstance();
-  private final Intake m_intake = Intake.getInstance();
+  //private final Intake m_intake = Intake.getInstance();
   private final Shooter m_shooter = Shooter.getInstance();
 
   // Autonomous commands
@@ -57,9 +57,9 @@ public class RobotContainer {
             () -> -ControlMap.m_driverController.getRightX());
 
   // Gunner commands
-  private final IntakeDown m_intakeDown = new IntakeDown(m_intake);
-  private final IntakeUp m_intakeUp = new IntakeUp(m_intake);
-  private final MoveRollers m_moveRollers = new MoveRollers(m_intake);
+  //private final IntakeDown m_intakeDown = new IntakeDown(m_intake);
+  //private final IntakeUp m_intakeUp = new IntakeUp(m_intake);
+  //private final MoveRollers m_moveRollers = new MoveRollers(m_intake);
   private final ShootNoteSpeaker m_shootSpeaker = new ShootNoteSpeaker(m_shooter);
   private final ShootNoteAmp m_shootAmp = new ShootNoteAmp(m_shooter);
   private final ShooterLeftMotor m_shootLeftMotor = new ShooterLeftMotor(m_shooter);
@@ -75,7 +75,7 @@ public class RobotContainer {
   private final SequentialCommandGroup scoreAmp = new SequentialCommandGroup(m_alignAmp.andThen(m_shootAmp));
 
   // Intake auto command
-  private final SequentialCommandGroup intakeNote = new SequentialCommandGroup(m_justMove.andThen(m_moveRollers));
+  //private final SequentialCommandGroup intakeNote = new SequentialCommandGroup(m_justMove.andThen(m_moveRollers));
 
   private boolean isFieldOriented = true;
 
@@ -91,7 +91,7 @@ public class RobotContainer {
     m_chooser.addOption("Move to Note", m_moveToNote);
     m_chooser.addOption("Score Speaker", scoreSpeaker);
     m_chooser.addOption("Score Amp", scoreAmp);
-    m_chooser.addOption("Auto Intake", intakeNote);
+    //m_chooser.addOption("Auto Intake", intakeNote);
     m_chooser.addOption("Swerve Characterization", new FeedForwardCharacterization(
               m_drivetrain,
               true,
@@ -109,9 +109,9 @@ public class RobotContainer {
     ControlMap.m_driverController.b().toggleOnTrue(m_defaultDrive);
 
     // Gunner button bindings
-    ControlMap.m_gunnerController.a().whileTrue(m_intakeDown);
-    ControlMap.m_gunnerController.b().whileTrue(m_intakeUp);
-    ControlMap.m_gunnerController.x().whileTrue(m_moveRollers);
+   // ControlMap.m_gunnerController.a().whileTrue(m_intakeDown);
+    //ControlMap.m_gunnerController.b().whileTrue(m_intakeUp);
+    //ControlMap.m_gunnerController.x().whileTrue(m_moveRollers);
     ControlMap.m_gunnerController.y().whileTrue(m_shootSpeaker);
     ControlMap.m_gunnerController.leftTrigger().whileTrue(m_shootAmp);
 
