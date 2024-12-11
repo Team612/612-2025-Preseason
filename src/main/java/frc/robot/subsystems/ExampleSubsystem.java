@@ -7,16 +7,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-// import com.revrobotics.CANSparkMax;
-// import com.revrobotics.CANSparkBase.IdleMode;
-// import com.revrobotics.CANSparkLowLevel.MotorType;
-
 public class ExampleSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  private static ExampleSubsystem exampleSubsystem = null;
-  // public ExampleSubsystem() {
-  // private CANSparkMax m_IntakePivotMotor;
-  // }
+  public ExampleSubsystem() {}
 
   /**
    * Example command factory method.
@@ -31,14 +24,6 @@ public class ExampleSubsystem extends SubsystemBase {
           /* one-time action goes here */
         });
   }
-
-  public static ExampleSubsystem getInstance(){
-    if (exampleSubsystem == null){
-       exampleSubsystem = new ExampleSubsystem();
-    }
-    return exampleSubsystem;
-  }
-
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
@@ -58,8 +43,5 @@ public class ExampleSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
-    // get shuffle board value
-    // if its one value, call example method command and use set to set it to 5 V
-
   }
 }
