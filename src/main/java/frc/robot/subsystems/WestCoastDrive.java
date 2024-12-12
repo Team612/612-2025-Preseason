@@ -16,10 +16,10 @@ private final WPI_TalonSRX right1;
 private final WPI_TalonSRX right2;
 private final DifferentialDrive drive;
 public WestCoastDrive() {
-    left1 = new WPI_TalonSRX(0);
-    left2 = new WPI_TalonSRX(1);
-    right1 = new WPI_TalonSRX(2);
-    right2 = new WPI_TalonSRX(3);
+    left1 = new WPI_TalonSRX(2);
+    left2 = new WPI_TalonSRX(11);
+    right1 = new WPI_TalonSRX(50);
+    right2 = new WPI_TalonSRX(15);
 
     left1.follow(left2);
     right1.follow(right2);
