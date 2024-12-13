@@ -17,38 +17,37 @@ import frc.robot.commands.ShooterCommands.ShootNoteAmp;
 import frc.robot.commands.ShooterCommands.ShootNoteSpeaker;
 import frc.robot.commands.ShooterCommands.ShooterLeftMotor;
 import frc.robot.commands.ShooterCommands.ShooterRightMotor;
-import frc.robot.commands.TrajectoryCommands.AlignAmp;
-import frc.robot.commands.TrajectoryCommands.AlignSpeaker;
-import frc.robot.commands.TrajectoryCommands.FollowNote;
-import frc.robot.commands.TrajectoryCommands.MoveToNote;
-import frc.robot.commands.TrajectoryCommands.RunOnTheFly;
-import frc.robot.commands.TrajectoryCommands.TrajectoryCreation;
+// import frc.robot.commands.TrajectoryCommands.AlignAmp;
+// import frc.robot.commands.TrajectoryCommands.AlignSpeaker;
+// import frc.robot.commands.TrajectoryCommands.FollowNote;
+// import frc.robot.commands.TrajectoryCommands.MoveToNote;
+// import frc.robot.commands.TrajectoryCommands.RunOnTheFly;
+// import frc.robot.commands.TrajectoryCommands.TrajectoryCreation;
 import frc.robot.controls.ControlMap;
 import frc.robot.commands.CharacterizationCommands.FeedForwardCharacterization;
 import frc.robot.commands.CharacterizationCommands.FeedForwardCharacterization.FeedForwardCharacterizationData;
 import frc.robot.subsystems.Drivetrain;
 //import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.PoseEstimator;
+// import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.TrajectoryConfiguration;
-import frc.robot.subsystems.Vision;
+// import frc.robot.subsystems.TrajectoryConfiguration;
+// import frc.robot.subsystems.Vision;
 
 public class RobotContainer {
   //Subsystem declerations
   private final Drivetrain m_drivetrain = Drivetrain.getInstance();
-  private final PoseEstimator m_poseEstimator = PoseEstimator.getPoseEstimatorInstance();
-  private final TrajectoryConfiguration m_trajectoryConfig = TrajectoryConfiguration.getInstance();
-  private final Vision m_vision = Vision.getVisionInstance();
+  // private final TrajectoryConfiguration m_trajectoryConfig = TrajectoryConfiguration.getInstance();
+  // private final Vision m_vision = Vision.getVisionInstance();
   //private final Intake m_intake = Intake.getInstance();
   private final Shooter m_shooter = Shooter.getInstance();
 
   // Autonomous commands
-  private final TrajectoryCreation m_traj = new TrajectoryCreation();
-  private final RunOnTheFly m_runOnTheFly = new RunOnTheFly(m_drivetrain, m_poseEstimator, m_traj, m_vision, 0);
-  private final FollowNote m_moveToNote = new FollowNote(m_drivetrain, m_poseEstimator, m_traj, m_vision, 0);
-  private final AlignAmp m_alignAmp = new AlignAmp(m_poseEstimator, m_traj, m_vision);
-  private final AlignSpeaker m_alignSpeaker = new AlignSpeaker(m_poseEstimator, m_traj, m_vision);
-  private final MoveToNote m_justMove = new MoveToNote(m_drivetrain, m_vision);
+  // private final TrajectoryCreation m_traj = new TrajectoryCreation();
+  // // private final RunOnTheFly m_runOnTheFly = new RunOnTheFly(m_drivetrain, m_poseEstimator, m_traj, m_vision, 0);
+  // // private final FollowNote m_moveToNote = new FollowNote(m_drivetrain, m_poseEstimator, m_traj, m_vision, 0);
+  // // private final AlignAmp m_alignAmp = new AlignAmp(m_poseEstimator, m_traj, m_vision);
+  // // private final AlignSpeaker m_alignSpeaker = new AlignSpeaker(m_poseEstimator, m_traj, m_vision);
+  // private final MoveToNote m_justMove = new MoveToNote(m_drivetrain, m_vision);
 
   // Drive command
   private final DefaultDrive m_defaultDrive = new DefaultDrive( m_drivetrain,
@@ -69,10 +68,10 @@ public class RobotContainer {
   private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   // Speaker auto command
-  private final SequentialCommandGroup scoreSpeaker = new SequentialCommandGroup(m_alignSpeaker.andThen(m_shootSpeaker));
+  // private final SequentialCommandGroup scoreSpeaker = new SequentialCommandGroup(m_alignSpeaker.andThen(m_shootSpeaker));
 
-  // Amp auto command
-  private final SequentialCommandGroup scoreAmp = new SequentialCommandGroup(m_alignAmp.andThen(m_shootAmp));
+  // // Amp auto command
+  // private final SequentialCommandGroup scoreAmp = new SequentialCommandGroup(m_alignAmp.andThen(m_shootAmp));
 
   // Intake auto command
   //private final SequentialCommandGroup intakeNote = new SequentialCommandGroup(m_justMove.andThen(m_moveRollers));
@@ -87,10 +86,10 @@ public class RobotContainer {
   }
 
   private void configureShuffleBoardBindings(){
-    m_chooser.addOption("Run on Fly", m_runOnTheFly);
-    m_chooser.addOption("Move to Note", m_moveToNote);
-    m_chooser.addOption("Score Speaker", scoreSpeaker);
-    m_chooser.addOption("Score Amp", scoreAmp);
+    // m_chooser.addOption("Run on Fly", m_runOnTheFly);
+    // m_chooser.addOption("Move to Note", m_moveToNote);
+    // m_chooser.addOption("Score Speaker", scoreSpeaker);
+    // m_chooser.addOption("Score Amp", scoreAmp);
     //m_chooser.addOption("Auto Intake", intakeNote);
     m_chooser.addOption("Swerve Characterization", new FeedForwardCharacterization(
               m_drivetrain,

@@ -6,19 +6,21 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
   private static final double DEADZONE = 0.05;
-  private TalonSRX m_ShooterMotorLeft;
-  private TalonSRX m_ShooterMotorRight;
+  private final CANSparkMax m_ShooterMotorLeft;
+  private final CANSparkMax m_ShooterMotorRight;
   static Shooter instance = null;
   /** Creates a new Shooter. */
   public Shooter() {
-    m_ShooterMotorLeft = new TalonSRX(Constants.ShooterConstants.shooterLeftID);
-    m_ShooterMotorRight = new TalonSRX(Constants.ShooterConstants.shooterRightID);
+    m_ShooterMotorLeft = new CANSparkMax(Constants.ShooterConstants.shooterLeftID, MotorType.kBrushless);
+    m_ShooterMotorRight = new CANSparkMax(Constants.ShooterConstants.shooterRightID, MotorType.kBrushless);
   }
 
   // Retrieve instance of shooter
@@ -29,22 +31,20 @@ public class Shooter extends SubsystemBase {
 
   // move shooter motors
   public void shoot(double rotateLeft, double rotateRight){
-    if(rotateLeft < DEADZONE) rotateLeft = 0;
-    if(rotateRight < DEADZONE) rotateRight = 0;
+    // if(rotateLeft < DEADZONE) rotateLeft = 0;
+    // if(rotateRight < DEADZONE) rotateRight = 0;
     moveLeftMotor(rotateLeft);
     moveRightMotor(rotateRight);
   }
 
   // move left motor
   public void moveLeftMotor(double rotateLeft){
-    if(rotateLeft < DEADZONE) rotateLeft = 0;
-    m_ShooterMotorLeft.set(TalonSRXControlMode.PercentOutput, rotateLeft);
+    m_ShooterMotorLeft.set(-1*rotateLeft);
   }
 
   // move right motor
   public void moveRightMotor(double rotateRight){
-    if(rotateRight < DEADZONE) rotateRight = 0;
-    m_ShooterMotorRight.set(TalonSRXControlMode.PercentOutput, rotateRight);
+    m_ShooterMotorRight.set(rotateRight);
   }
 
   @Override
