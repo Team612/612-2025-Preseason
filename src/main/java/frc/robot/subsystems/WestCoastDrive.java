@@ -24,7 +24,7 @@ public WestCoastDrive() {
     left1.follow(left2);
     right1.follow(right2);
 
-    drive = new DifferentialDrive(left1::set, right2::set);
+    drive = new DifferentialDrive(left2::set, right2::set);
 }
 
   public void drive(double ForwardY, double RotationZ){
