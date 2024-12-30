@@ -13,114 +13,105 @@ import com.revrobotics.CANSparkMax;
 public class MotorBoard extends SubsystemBase {
   
   // instantiates all of the datafields of the motor board class
+  // subsystem instance
   private static MotorBoard m_MotorBoard = null;
+
+  // mottor instantiatinons
   private CANSparkMax neo1 = new CANSparkMax(Constants.neo1ID, MotorType.kBrushless);
   private CANSparkMax neo2 = new CANSparkMax(Constants.neo2ID, MotorType.kBrushless);
   private TalonSRX cim1 = new TalonSRX(Constants.cim1ID);
   private TalonSRX cim2 = new TalonSRX(Constants.cim2ID);
+
+  // talon srx's don't have a good method to keep track of their current output percent so we gotta keep track of that ourselves
   private double realCim1Output = 0.0;
   private double realCim2Output = 0.0;
+
+  // keeps track of the target speed we want every motor to be
   private double speedArray[] = new double[Constants.numberOfMotors];
+
+  // keeps track if any motor is inversed
   private boolean inverseArray[] = new boolean[Constants.numberOfMotors];
+
+  // returns the single instance of the subsystem
   public static MotorBoard getInstance(){
     if (m_MotorBoard == null){
       m_MotorBoard = new MotorBoard();
     }
     return m_MotorBoard;
   }
-  public MotorBoard() {
-  }
 
+  // returns target speed for a specific motor based on index
   public double getXSpeed(int x){
     return speedArray[x];
   }
 
+  // sets a target speed for a specific motor based on index
+  public void setSpecificSpeed(int index ,double speed){
+    speedArray[index] = speed;
+  }
+
+  // pretty self explanitory just read the name of the method
   public void setAllSpeed(double speed){
     for (int i = 0; i < speedArray.length; i++)
       speedArray[i] = speed;
   }
 
+  // sets a specific boolean inverse array value based on the motors index
   public void setInverse(int index, boolean set){
     inverseArray[index] = set;
   }
 
-  public void setSpecificSpeed(int index ,double speed){
-    speedArray[index] = speed;
+  // this method runs periodically to smooth the transition between desired motor speeds
+  // by only increasing real motor speed by a set constant called maxNeoPercentChange
+  private void smoothTransition(CANSparkMax neo, int neoIndex){
+    if (!inverseArray[neoIndex]){
+      if (Math.abs(speedArray[neoIndex] - neo.get()) < Constants.maxNeoPercentChange)
+        neo.set(speedArray[neoIndex]);
+      else if (neo.get() > speedArray[neoIndex])
+        neo.set(neo.get() - Constants.maxNeoPercentChange);
+      else if (neo.get() < speedArray[neoIndex])
+        neo.set(neo.get() + Constants.maxNeoPercentChange);
+    }
+    else{
+      if (Math.abs(-speedArray[neoIndex] - neo.get()) < Constants.maxNeoPercentChange)
+        neo.set(-speedArray[neoIndex]);
+      else if (neo.get() > -speedArray[neoIndex])
+        neo.set(neo.get() - Constants.maxNeoPercentChange);
+      else if (neo.get() < -speedArray[neoIndex])
+        neo.set(neo.get() + Constants.maxNeoPercentChange);
+    }
+  }
+  // this method runs periodically to smooth the transition between desired motor speeds
+  // by only increasing real motor speed by a set constant called maxCimPercentChange
+  private double smoothTransition(TalonSRX cim, int cimIndex, double realCimOutput){
+    if (!inverseArray[cimIndex]){
+      if (Math.abs(speedArray[cimIndex] - realCimOutput) < Constants.maxCimPercentChange)
+        realCimOutput = speedArray[cimIndex];
+      else if (realCimOutput > speedArray[cimIndex])
+        realCimOutput -= Constants.maxCimPercentChange;
+      else if (realCimOutput < speedArray[cimIndex])
+        realCimOutput += Constants.maxCimPercentChange;
+    }
+    else{
+      if (Math.abs(-speedArray[cimIndex] - realCimOutput) < Constants.maxCimPercentChange)
+        realCimOutput = -speedArray[cimIndex];
+      else if (realCimOutput > -speedArray[cimIndex])
+        realCimOutput -= Constants.maxCimPercentChange;
+      else if (realCimOutput < -speedArray[cimIndex])
+        realCimOutput += Constants.maxCimPercentChange;
+    }
+    cim.set(TalonSRXControlMode.PercentOutput, realCimOutput);
+    return realCimOutput;
   }
 
   @Override
   public void periodic() {
-    // these four modules of code make the motors smoothly transition to the speed given by the speed array
-    if (!inverseArray[Constants.neo1Index]){
-      if (Math.abs(speedArray[Constants.neo1Index] - neo1.get()) < Constants.maxNeoPercentChange)
-        neo1.set(speedArray[Constants.neo1Index]);
-      else if (neo1.get() > speedArray[Constants.neo1Index])
-        neo1.set(neo1.get() - Constants.maxNeoPercentChange);
-      else if (neo1.get() < speedArray[Constants.neo1Index])
-        neo1.set(neo1.get() + Constants.maxNeoPercentChange);
-    }
-    else{
-      if (Math.abs(-speedArray[Constants.neo1Index] - neo1.get()) < Constants.maxNeoPercentChange)
-        neo1.set(-speedArray[Constants.neo1Index]);
-      else if (neo1.get() > -speedArray[Constants.neo1Index])
-        neo1.set(neo1.get() - Constants.maxNeoPercentChange);
-      else if (neo1.get() < -speedArray[Constants.neo1Index])
-        neo1.set(neo1.get() + Constants.maxNeoPercentChange);
-    }
-    
-    if (!inverseArray[Constants.neo2Index]){
-      if (Math.abs(speedArray[Constants.neo2Index] - neo2.get()) < Constants.maxNeoPercentChange)
-        neo2.set(speedArray[Constants.neo2Index]);
-      else if (neo2.get() > speedArray[Constants.neo2Index])
-        neo2.set(neo2.get() - Constants.maxNeoPercentChange);
-      else if (neo2.get() < speedArray[Constants.neo2Index])
-        neo2.set(neo2.get() + Constants.maxNeoPercentChange);
-    }
-    else{
-      if (Math.abs(-speedArray[Constants.neo2Index] - neo2.get()) < Constants.maxNeoPercentChange)
-        neo2.set(-speedArray[Constants.neo2Index]);
-      else if (neo2.get() > -speedArray[Constants.neo2Index])
-        neo2.set(neo2.get() - Constants.maxNeoPercentChange);
-      else if (neo2.get() < -speedArray[Constants.neo2Index])
-        neo2.set(neo2.get() + Constants.maxNeoPercentChange);
-    }
-    
+    // smoothes transition between speeds by only increasing motor speed my the maximum speed percent change constant
+    smoothTransition(neo1, Constants.neo1Index);
+    smoothTransition(neo2, Constants.neo2Index);
 
-    if (!inverseArray[Constants.cim1Index]){
-      if (Math.abs(speedArray[Constants.cim1Index] - realCim1Output) < Constants.maxCimPercentChange)
-        realCim1Output = speedArray[Constants.cim1Index];
-      else if (realCim1Output > speedArray[Constants.cim1Index])
-        realCim1Output -= Constants.maxCimPercentChange;
-      else if (realCim1Output < speedArray[Constants.cim1Index])
-        realCim1Output += Constants.maxCimPercentChange;
-    }
-    else{
-      if (Math.abs(-speedArray[Constants.cim1Index] - realCim1Output) < Constants.maxCimPercentChange)
-        realCim1Output = -speedArray[Constants.cim1Index];
-      else if (realCim1Output > -speedArray[Constants.cim1Index])
-        realCim1Output -= Constants.maxCimPercentChange;
-      else if (realCim1Output < -speedArray[Constants.cim1Index])
-        realCim1Output += Constants.maxCimPercentChange;
-    }
-    
-    if (!inverseArray[Constants.cim2Index]){
-      if (Math.abs(speedArray[Constants.cim2Index] - realCim2Output) < Constants.maxCimPercentChange)
-        realCim2Output = speedArray[Constants.cim2Index];
-      else if (realCim2Output > speedArray[Constants.cim2Index])
-        realCim2Output -= Constants.maxCimPercentChange;
-      else if (realCim2Output < speedArray[Constants.cim2Index])
-        realCim2Output += Constants.maxCimPercentChange;
-    }
-    else{
-      if (Math.abs(-speedArray[Constants.cim2Index] - realCim2Output) < Constants.maxCimPercentChange)
-        realCim2Output = -speedArray[Constants.cim2Index];
-      else if (realCim2Output > -speedArray[Constants.cim2Index])
-        realCim2Output -= Constants.maxCimPercentChange;
-      else if (realCim2Output < -speedArray[Constants.cim2Index])
-        realCim2Output += Constants.maxCimPercentChange;
-    }
-
-    cim1.set(TalonSRXControlMode.PercentOutput, realCim1Output);
-    cim2.set(TalonSRXControlMode.PercentOutput, realCim2Output);
+    // talon srx's don't want to be good boys and report correct output percentages so we got to keep track of that ourselves
+    realCim1Output = smoothTransition(cim1, Constants.cim1Index, realCim1Output);
+    realCim2Output = smoothTransition(cim2, Constants.cim2Index, realCim2Output);
   }
 }
